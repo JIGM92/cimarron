@@ -263,22 +263,6 @@
 
         function style_HallazgosCimarrn_2_0(feature) {
             switch(String(feature.properties['FACTOR_AMB'])) {
-                default:
-                    return {
-                pane: 'pane_HallazgosCimarrn_2',
-                radius: 4.0,
-                opacity: 1,
-                color: 'rgba(35,35,35,1.0)',
-                dashArray: '',
-                lineCap: 'butt',
-                lineJoin: 'miter',
-                weight: 1,
-                fill: true,
-                fillOpacity: 1,
-                fillColor: 'rgba(92,214,81,1.0)',
-                interactive: true,
-            }
-                    break;
                 case 'Agua':
                     return {
                 pane: 'pane_HallazgosCimarrn_2',
@@ -371,7 +355,7 @@
                 weight: 1,
                 fill: true,
                 fillOpacity: 1,
-                fillColor: 'rgba(65,78,176,1.0)',
+                fillColor: 'rgba(181,31,231,1.0)',
                 interactive: true,
             }
                     break;
@@ -388,6 +372,22 @@
                 fill: true,
                 fillOpacity: 1,
                 fillColor: 'rgba(139,79,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(50,50,211,1.0)',
                 interactive: true,
             }
                     break;
@@ -424,7 +424,7 @@
         document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
         .title += 'Search for a place';
         var overlaysTree = [
-            {label: 'Hallazgos Cimarrón<br /><table><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Agua1.png" /></td><td>Agua</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Atmósfera2.png" /></td><td>Atmósfera</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Fauna3.png" /></td><td>Fauna</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Flora4.png" /></td><td>Flora</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Paisaje5.png" /></td><td>Paisaje</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Social6.png" /></td><td>Social</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Suelo7.png" /></td><td>Suelo</td></tr></table>', layer: layer_HallazgosCimarrn_2},
+            {label: 'Hallazgos Cimarrón<br /><table><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Agua0.png" /></td><td>Agua</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Atmósfera1.png" /></td><td>Atmósfera</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Fauna2.png" /></td><td>Fauna</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Flora3.png" /></td><td>Flora</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Paisaje4.png" /></td><td>Paisaje</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Social5.png" /></td><td>Social</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Suelo6.png" /></td><td>Suelo</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_7.png" /></td><td></td></tr></table>', layer: layer_HallazgosCimarrn_2},
             {label: '<img src="legend/AreaProyecto_1.png" /> Area Proyecto', layer: layer_AreaProyecto_1},
             {label: "ESRI Satellite", layer: layer_ESRISatellite_0, radioGroup: 'bm' },]
         var lay = L.control.layers.tree(null, overlaysTree,{
@@ -457,7 +457,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"ZONA_DE_PR": "str","FECHA": "str","HALLAZGO": "str","CONTRATA": "str","FACTOR_AMB": "str","IMPACTO_PO": "str"};
+        var Filters = {"IMPACTO_PO": "str","ZONA_DE_PR": "str","FECHA": "str","FACTOR_AMB": "str","CONTRATA": "str","PROGRAMA": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -547,6 +547,55 @@
           }
           })
         }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_IMPACTO_PO = document.createElement('div');
+            div_IMPACTO_PO.id = "div_IMPACTO_PO";
+            div_IMPACTO_PO.className= "filterselect";
+            document.getElementById("menu").appendChild(div_IMPACTO_PO);
+            sel_IMPACTO_PO = document.createElement('select');
+            sel_IMPACTO_PO.multiple = true;
+            sel_IMPACTO_PO.size = 10;
+            sel_IMPACTO_PO.id = "sel_IMPACTO_PO";
+            var IMPACTO_PO_options_str = "<option value='' unselected></option>";
+            sel_IMPACTO_PO.onchange = function(){filterFunc()};
+            IMPACTO_PO_options_str  += '<option value="NULL">NULL</option>';
+            IMPACTO_PO_options_str  += '<option value="AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DE CUERPOS TEMPORALES DE AGUA SUPERFICIAL PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG1)">AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DE CUERPOS TEMPORALES DE AGUA SUPERFICIAL PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG1)</option>';
+            IMPACTO_PO_options_str  += '<option value="AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DEL AGUA SUBTERRÁNEA PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG2)">AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DEL AGUA SUBTERRÁNEA PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG2)</option>';
+            IMPACTO_PO_options_str  += '<option value="AFECTACIÓN DEL SUELO POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSO (SU2)">AFECTACIÓN DEL SUELO POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSO (SU2)</option>';
+            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DE LA CALIDAD DEL AIRE POR GENERACIÓN Y DISPERSIÓN DE PARTÍCULAS SUSPENDIDAS (ATM2)">ALTERACIÓN DE LA CALIDAD DEL AIRE POR GENERACIÓN Y DISPERSIÓN DE PARTÍCULAS SUSPENDIDAS (ATM2)</option>';
+            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DE LA CALIDAD DEL AIRE POR LA GENERACIÓN DE EMISIONES A LA ATMÓSFERA (ATM1">ALTERACIÓN DE LA CALIDAD DEL AIRE POR LA GENERACIÓN DE EMISIONES A LA ATMÓSFERA (ATM1</option>';
+            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DE LA CALIDAD PAISAJÍSTICA POR LA INTERVENCIÓN DE COMPONENTES AJENOS (PA1)">ALTERACIÓN DE LA CALIDAD PAISAJÍSTICA POR LA INTERVENCIÓN DE COMPONENTES AJENOS (PA1)</option>';
+            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DEL PAISAJE">ALTERACIÓN DEL PAISAJE</option>';
+            IMPACTO_PO_options_str  += '<option value="AUSENCIA DE SEGUIMIENTO A MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME">AUSENCIA DE SEGUIMIENTO A MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME</option>';
+            IMPACTO_PO_options_str  += '<option value="Alteración de la calidad del aire por la generación de emisiones a la atmósfera. (ATM1)">Alteración de la calidad del aire por la generación de emisiones a la atmósfera. (ATM1)</option>';
+            IMPACTO_PO_options_str  += '<option value="CAIDA DE FAUNA SILVESTRE (PRINCIPALMENTE AVES) Y MUERTE DE LOS INDIVIDUOS AL QUEDARSE ATRAPADOS EN EL CONTENEDOR">CAIDA DE FAUNA SILVESTRE (PRINCIPALMENTE AVES) Y MUERTE DE LOS INDIVIDUOS AL QUEDARSE ATRAPADOS EN EL CONTENEDOR</option>';
+            IMPACTO_PO_options_str  += '<option value="ENCUENTRO/INCIDENTE CON FAUNA NOCIVA O DE INTERES TOXICOLOGICO">ENCUENTRO/INCIDENTE CON FAUNA NOCIVA O DE INTERES TOXICOLOGICO</option>';
+            IMPACTO_PO_options_str  += '<option value="INCREMENTO EN LOS PROCESOS EROSIVOS POR CAMBIO DE USO DEL SUELO">INCREMENTO EN LOS PROCESOS EROSIVOS POR CAMBIO DE USO DEL SUELO</option>';
+            IMPACTO_PO_options_str  += '<option value="MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME Y CONTAMINACION ATMOSFERICA">MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME Y CONTAMINACION ATMOSFERICA</option>';
+            IMPACTO_PO_options_str  += '<option value="MODIFICACIÓN DEL RELIEVE NATURAL POR ACCIONES DE DESPALME Y MOVIMIENTOS DE TIERRA (GE1) ETAPA: PREPARACIÓN DEL SITIO, CONSTRUCCIÓN, OPERACIÓN Y MANTENIMIENTO ABREVIATURAS A LOS CRITERIOS DE EVALUACIÓN PARA LAS MEDIDAS DE MITIGACIÓN">MODIFICACIÓN DEL RELIEVE NATURAL POR ACCIONES DE DESPALME Y MOVIMIENTOS DE TIERRA (GE1) ETAPA: PREPARACIÓN DEL SITIO, CONSTRUCCIÓN, OPERACIÓN Y MANTENIMIENTO ABREVIATURAS A LOS CRITERIOS DE EVALUACIÓN PARA LAS MEDIDAS DE MITIGACIÓN</option>';
+            IMPACTO_PO_options_str  += '<option value="PERDIDA DE INDIVIDUOS RESCATADOS-INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO">PERDIDA DE INDIVIDUOS RESCATADOS-INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO</option>';
+            IMPACTO_PO_options_str  += '<option value="PERDIDA DE INDIVIDUOS RESCATADOS/REFORESTADOS - INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO">PERDIDA DE INDIVIDUOS RESCATADOS/REFORESTADOS - INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO</option>';
+            IMPACTO_PO_options_str  += '<option value="PÉRDIDA DE LA COBERTURA VEGETAL">PÉRDIDA DE LA COBERTURA VEGETAL</option>';
+            IMPACTO_PO_options_str  += '<option value="PÉRDIDA DE LA COBERTURA VEGETAL EN1,018.00 HECTÁREAS POR CAMBIO DE USO DEL SUELO (F1)">PÉRDIDA DE LA COBERTURA VEGETAL EN1,018.00 HECTÁREAS POR CAMBIO DE USO DEL SUELO (F1)</option>';
+            IMPACTO_PO_options_str  += '<option value="USO ERRONEO DE CONTENIDO/CONFUSION AL PERSONAL">USO ERRONEO DE CONTENIDO/CONFUSION AL PERSONAL</option>';
+            sel_IMPACTO_PO.innerHTML = IMPACTO_PO_options_str;
+            div_IMPACTO_PO.appendChild(sel_IMPACTO_PO);
+            var lab_IMPACTO_PO = document.createElement('div');
+            lab_IMPACTO_PO.innerHTML = 'IMPACTO_PO';
+            lab_IMPACTO_PO.className = 'filterlabel';
+            div_IMPACTO_PO.appendChild(lab_IMPACTO_PO);
+            var reset_IMPACTO_PO = document.createElement('div');
+            reset_IMPACTO_PO.innerHTML = 'clear filter';
+            reset_IMPACTO_PO.className = 'filterlabel';
+            reset_IMPACTO_PO.onclick = function() {
+                var options = document.getElementById("sel_IMPACTO_PO").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_IMPACTO_PO.appendChild(reset_IMPACTO_PO);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
             var div_ZONA_DE_PR = document.createElement('div');
@@ -703,26 +752,26 @@
             var FECHA_options_str = "<option value='' unselected></option>";
             sel_FECHA.onchange = function(){filterFunc()};
             FECHA_options_str  += '<option value="03-09-2024">03-09-2024</option>';
+            FECHA_options_str  += '<option value="04-02-2025">04-02-2025</option>';
             FECHA_options_str  += '<option value="04-09-2024">04-09-2024</option>';
-            FECHA_options_str  += '<option value="04/02/2025">04/02/2025</option>';
-            FECHA_options_str  += '<option value="05/02/2025">05/02/2025</option>';
-            FECHA_options_str  += '<option value="05/09-2024">05/09-2024</option>';
-            FECHA_options_str  += '<option value="06/02/2025">06/02/2025</option>';
-            FECHA_options_str  += '<option value="07/02/2025">07/02/2025</option>';
-            FECHA_options_str  += '<option value="07/07/2025">07/07/2025</option>';
-            FECHA_options_str  += '<option value="08/07/2025">08/07/2025</option>';
-            FECHA_options_str  += '<option value="09/07/2025">09/07/2025</option>';
-            FECHA_options_str  += '<option value="10/07/2025">10/07/2025</option>';
-            FECHA_options_str  += '<option value="11/07/2025">11/07/2025</option>';
-            FECHA_options_str  += '<option value="11/10/2025">11/10/2025</option>';
-            FECHA_options_str  += '<option value="11/11/2025">11/11/2025</option>';
-            FECHA_options_str  += '<option value="12/11/2025">12/11/2025</option>';
-            FECHA_options_str  += '<option value="13/11/2025">13/11/2025</option>';
-            FECHA_options_str  += '<option value="25-11-24">25-11-24</option>';
-            FECHA_options_str  += '<option value="26/11/2024">26/11/2024</option>';
-            FECHA_options_str  += '<option value="27/11/2024">27/11/2024</option>';
-            FECHA_options_str  += '<option value="28/11/2024">28/11/2024</option>';
-            FECHA_options_str  += '<option value="29/11/2024">29/11/2024</option>';
+            FECHA_options_str  += '<option value="05-02-2025">05-02-2025</option>';
+            FECHA_options_str  += '<option value="05-09-2024">05-09-2024</option>';
+            FECHA_options_str  += '<option value="06-02-2025">06-02-2025</option>';
+            FECHA_options_str  += '<option value="07-02-2025">07-02-2025</option>';
+            FECHA_options_str  += '<option value="07-07-2025">07-07-2025</option>';
+            FECHA_options_str  += '<option value="08-07-2025">08-07-2025</option>';
+            FECHA_options_str  += '<option value="09-07-2025">09-07-2025</option>';
+            FECHA_options_str  += '<option value="10-07-2025">10-07-2025</option>';
+            FECHA_options_str  += '<option value="10-11-2025">10-11-2025</option>';
+            FECHA_options_str  += '<option value="11-07-2025">11-07-2025</option>';
+            FECHA_options_str  += '<option value="11-11-2025">11-11-2025</option>';
+            FECHA_options_str  += '<option value="12-11-2025">12-11-2025</option>';
+            FECHA_options_str  += '<option value="13-11-2025">13-11-2025</option>';
+            FECHA_options_str  += '<option value="25-11-2024">25-11-2024</option>';
+            FECHA_options_str  += '<option value="26-11-2024">26-11-2024</option>';
+            FECHA_options_str  += '<option value="27-11-2024">27-11-2024</option>';
+            FECHA_options_str  += '<option value="28-11-2024">28-11-2024</option>';
+            FECHA_options_str  += '<option value="29-11-2024">29-11-2024</option>';
             sel_FECHA.innerHTML = FECHA_options_str;
             div_FECHA.appendChild(sel_FECHA);
             var lab_FECHA = document.createElement('div');
@@ -742,225 +791,41 @@
             div_FECHA.appendChild(reset_FECHA);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_HALLAZGO = document.createElement('div');
-            div_HALLAZGO.id = "div_HALLAZGO";
-            div_HALLAZGO.className= "filterselect";
-            document.getElementById("menu").appendChild(div_HALLAZGO);
-            sel_HALLAZGO = document.createElement('select');
-            sel_HALLAZGO.multiple = true;
-            sel_HALLAZGO.size = 10;
-            sel_HALLAZGO.id = "sel_HALLAZGO";
-            var HALLAZGO_options_str = "<option value='' unselected></option>";
-            sel_HALLAZGO.onchange = function(){filterFunc()};
-            HALLAZGO_options_str  += '<option value="Afectación  a vegetación por derrame de mezcla. Necesidad de capacitación al personal y desarrollo de buenas acciones para el manejo de residuos. Se necesita retiro y disposición correcta,">Afectación  a vegetación por derrame de mezcla. Necesidad de capacitación al personal y desarrollo de buenas acciones para el manejo de residuos. Se necesita retiro y disposición correcta,</option>';
-            HALLAZGO_options_str  += '<option value="Afectación al paisaje y salud del personal por la gran cantidad de polvo dispersada">Afectación al paisaje y salud del personal por la gran cantidad de polvo dispersada</option>';
-            HALLAZGO_options_str  += '<option value="Aplicación de mulch a individuos reubicados">Aplicación de mulch a individuos reubicados</option>';
-            HALLAZGO_options_str  += '<option value="Atención inmediata del derrame y complementar el Kit antiderrame pues se encuentra incompleto y en mal estado. No cuenta con formatos fisicos de la revisión de la unidad 05.">Atención inmediata del derrame y complementar el Kit antiderrame pues se encuentra incompleto y en mal estado. No cuenta con formatos fisicos de la revisión de la unidad 05.</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de charola de contención">Ausencia de charola de contención</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de delimitación y señalizacion de almacén de diversos materiales, mantener el orden y limpieza del área.">Ausencia de delimitación y señalizacion de almacén de diversos materiales, mantener el orden y limpieza del área.</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de gestión de etiquetado, censo de sobrevivencia y delimitacion de parcelas">Ausencia de gestión de etiquetado, censo de sobrevivencia y delimitacion de parcelas</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de limpieza en sanitarios portátiles">Ausencia de limpieza en sanitarios portátiles</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de orden y limpieza">Ausencia de orden y limpieza</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de orden y limpieza en la zona">Ausencia de orden y limpieza en la zona</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de orden y limpieza en área de trabajo">Ausencia de orden y limpieza en área de trabajo</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de orden y limpieza en área de trabajo. Residuos de las actvidades y botas de hule tiradas en el área">Ausencia de orden y limpieza en área de trabajo. Residuos de las actvidades y botas de hule tiradas en el área</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de señalizacion de área y sustancias. (Se recolocaron los implementos pero aún esta pendiente la señalización).">Ausencia de señalizacion de área y sustancias. (Se recolocaron los implementos pero aún esta pendiente la señalización).</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de señalizacion en area de confinamiento de RME (madera-metal)">Ausencia de señalizacion en area de confinamiento de RME (madera-metal)</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de señalización de areas de acopio de material">Ausencia de señalización de areas de acopio de material</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de señalización para identificación de contenedores que utiliza el personal">Ausencia de señalización para identificación de contenedores que utiliza el personal</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia de señalética en el Kit antiderrames">Ausencia de señalética en el Kit antiderrames</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia en la delimitación e identificación de áreas para acopio de residuos y puntos seguros">Ausencia en la delimitación e identificación de áreas para acopio de residuos y puntos seguros</option>';
-            HALLAZGO_options_str  += '<option value="Ausencia y/o señáletica en mal estado">Ausencia y/o señáletica en mal estado</option>';
-            HALLAZGO_options_str  += '<option value="Baños limpios y en buen estado">Baños limpios y en buen estado</option>';
-            HALLAZGO_options_str  += '<option value="Brecha de aproximamente 50 metros de largo fuera del trazo denominado "Polígonos", se argumenta que por la topografía ya no se continuo. Si embargo esta apertura esta fuera de los poligonos que se aprecian en el archivo KMZ.">Brecha de aproximamente 50 metros de largo fuera del trazo denominado "Polígonos", se argumenta que por la topografía ya no se continuo. Si embargo esta apertura esta fuera de los poligonos que se aprecian en el archivo KMZ.</option>';
-            HALLAZGO_options_str  += '<option value="Cargador frontal dañado, llanta con baja presión de aire, llenado incorrecto de check list, se han rellenado dias futuros. Kit antiderrame incompleto">Cargador frontal dañado, llanta con baja presión de aire, llenado incorrecto de check list, se han rellenado dias futuros. Kit antiderrame incompleto</option>';
-            HALLAZGO_options_str  += '<option value="Codigos de identificación ilegibles">Codigos de identificación ilegibles</option>';
-            HALLAZGO_options_str  += '<option value="Conformadora presentaba residuos de goteo de aflojatodo y acomodo de bandeja  (Unidad 23)">Conformadora presentaba residuos de goteo de aflojatodo y acomodo de bandeja  (Unidad 23)</option>';
-            HALLAZGO_options_str  += '<option value="Contenedor sin señaletica de contenido">Contenedor sin señaletica de contenido</option>';
-            HALLAZGO_options_str  += '<option value="Contenedores de residuos sin señaletica">Contenedores de residuos sin señaletica</option>';
-            HALLAZGO_options_str  += '<option value="Contenedores de sustancia y kit antiderrame sin señaletica">Contenedores de sustancia y kit antiderrame sin señaletica</option>';
-            HALLAZGO_options_str  += '<option value="Contenedores sin señaletica de contenido">Contenedores sin señaletica de contenido</option>';
-            HALLAZGO_options_str  += '<option value="Correcta segregacion de RSU-Empleo de contenedores no desechables">Correcta segregacion de RSU-Empleo de contenedores no desechables</option>';
-            HALLAZGO_options_str  += '<option value="Correcto almacenamiento y señalización de escorias de metal">Correcto almacenamiento y señalización de escorias de metal</option>';
-            HALLAZGO_options_str  += '<option value="Delimitacion con estacas">Delimitacion con estacas</option>';
-            HALLAZGO_options_str  += '<option value="Delimitación y señalizacion de área de trabajo y puntos limpios">Delimitación y señalizacion de área de trabajo y puntos limpios</option>';
-            HALLAZGO_options_str  += '<option value="Derrame de aceite (ausencia de charola) y residuos de manejo especial">Derrame de aceite (ausencia de charola) y residuos de manejo especial</option>';
-            HALLAZGO_options_str  += '<option value="Derrame de aceite (ausencia de charola)-Rosendo Peña">Derrame de aceite (ausencia de charola)-Rosendo Peña</option>';
-            HALLAZGO_options_str  += '<option value="Derrame de sustancia, contenedores sin señaletica (Gilberto Rivera). Residuos peligrosos cerca de maquinara y en contenedores inadecuados">Derrame de sustancia, contenedores sin señaletica (Gilberto Rivera). Residuos peligrosos cerca de maquinara y en contenedores inadecuados</option>';
-            HALLAZGO_options_str  += '<option value="Detección de residuos fuera de los depositos asignados">Detección de residuos fuera de los depositos asignados</option>';
-            HALLAZGO_options_str  += '<option value="El almacen temporal no se encuentra debidamente señalizado">El almacen temporal no se encuentra debidamente señalizado</option>';
-            HALLAZGO_options_str  += '<option value="En algunos ejemplares el contenido es ilegible, algunos no contaban con etiqueta, ademas se localizaron etiquetas tiradas dentro del area. Homogenizar el material empleado por la duración del mismo">En algunos ejemplares el contenido es ilegible, algunos no contaban con etiqueta, ademas se localizaron etiquetas tiradas dentro del area. Homogenizar el material empleado por la duración del mismo</option>';
-            HALLAZGO_options_str  += '<option value="Evidenciar la distribución del area de vivero, especies, cantidades y mantenimiento aplicado con miras a la necesidad de reponer planta muerta en los poligonos.">Evidenciar la distribución del area de vivero, especies, cantidades y mantenimiento aplicado con miras a la necesidad de reponer planta muerta en los poligonos.</option>';
-            HALLAZGO_options_str  += '<option value="Existe la presencia de residuos en zonas no designadas para su almacenamiento">Existe la presencia de residuos en zonas no designadas para su almacenamiento</option>';
-            HALLAZGO_options_str  += '<option value="Existe material vegetal sin triturar">Existe material vegetal sin triturar</option>';
-            HALLAZGO_options_str  += '<option value="Existe un punto de acopio de residuos de concreto en la zona el cual se encuentra a punto de desbordarse">Existe un punto de acopio de residuos de concreto en la zona el cual se encuentra a punto de desbordarse</option>';
-            HALLAZGO_options_str  += '<option value="Existe un punto de acopio de residuos de concreto en la zona, sin embargo ya no existe personal laborando en la zona">Existe un punto de acopio de residuos de concreto en la zona, sin embargo ya no existe personal laborando en la zona</option>';
-            HALLAZGO_options_str  += '<option value="Existen Residuos Sólidos Urbanos en la zona y algunos Residuos de Manejo Especial (madera)">Existen Residuos Sólidos Urbanos en la zona y algunos Residuos de Manejo Especial (madera)</option>';
-            HALLAZGO_options_str  += '<option value="Existen varios derrames en toda el área desmontada, se contabilizaron mas de 5 manchones en promedio 10 cm de diametro.">Existen varios derrames en toda el área desmontada, se contabilizaron mas de 5 manchones en promedio 10 cm de diametro.</option>';
-            HALLAZGO_options_str  += '<option value="Existencia de delimitación con estacas">Existencia de delimitación con estacas</option>';
-            HALLAZGO_options_str  += '<option value="Falta agua en sanitarios">Falta agua en sanitarios</option>';
-            HALLAZGO_options_str  += '<option value="Falta de concientización al personal sobre el cuidado de la flora">Falta de concientización al personal sobre el cuidado de la flora</option>';
-            HALLAZGO_options_str  += '<option value="Falta de orden y limpieza en sanitarios">Falta de orden y limpieza en sanitarios</option>';
-            HALLAZGO_options_str  += '<option value="Falta de orden y limpieza en sanitarios, asi mismo capacitación al personal para el uso correcto">Falta de orden y limpieza en sanitarios, asi mismo capacitación al personal para el uso correcto</option>';
-            HALLAZGO_options_str  += '<option value="Falta de orden y limpieza-Rosendo Peña">Falta de orden y limpieza-Rosendo Peña</option>';
-            HALLAZGO_options_str  += '<option value="Falta orden dentro del almacén, señalización en mal estado, limpieza.">Falta orden dentro del almacén, señalización en mal estado, limpieza.</option>';
-            HALLAZGO_options_str  += '<option value="Falta orden y limpieza en almacén de residuos peligrosos">Falta orden y limpieza en almacén de residuos peligrosos</option>';
-            HALLAZGO_options_str  += '<option value="Faltan contenedores, orden y limpieza; señalización de materiales-Aldo Hernández (Pyroblast)">Faltan contenedores, orden y limpieza; señalización de materiales-Aldo Hernández (Pyroblast)</option>';
-            HALLAZGO_options_str  += '<option value="Fuga o derrame de residuos">Fuga o derrame de residuos</option>';
-            HALLAZGO_options_str  += '<option value="Fuga o derrame de residuos, Check list mal llenado, Kit antiderrame incompleto">Fuga o derrame de residuos, Check list mal llenado, Kit antiderrame incompleto</option>';
-            HALLAZGO_options_str  += '<option value="Generador sin bandeja de contención de derrames">Generador sin bandeja de contención de derrames</option>';
-            HALLAZGO_options_str  += '<option value="Gestión de la información a incluir en el etiquetado permanente">Gestión de la información a incluir en el etiquetado permanente</option>';
-            HALLAZGO_options_str  += '<option value="Goteo de aceite">Goteo de aceite</option>';
-            HALLAZGO_options_str  += '<option value="Impresicion sobre el limite de horas trabajadas para ingreso a mantenimiento de maquinaria (Unidad 03)">Impresicion sobre el limite de horas trabajadas para ingreso a mantenimiento de maquinaria (Unidad 03)</option>';
-            HALLAZGO_options_str  += '<option value="Individuos muertos">Individuos muertos</option>';
-            HALLAZGO_options_str  += '<option value="Individuos reubicados muertos">Individuos reubicados muertos</option>';
-            HALLAZGO_options_str  += '<option value="Informacion incompleta en bitacoras y falta de firma del responsable. Unidad 06">Informacion incompleta en bitacoras y falta de firma del responsable. Unidad 06</option>';
-            HALLAZGO_options_str  += '<option value="Kit antiderrame completo">Kit antiderrame completo</option>';
-            HALLAZGO_options_str  += '<option value="Kit antiderrame incompleto">Kit antiderrame incompleto</option>';
-            HALLAZGO_options_str  += '<option value="Kit antiderrame incompleto (Unidad 5409)">Kit antiderrame incompleto (Unidad 5409)</option>';
-            HALLAZGO_options_str  += '<option value="La señalética de los contenedores de basura se encuentra desgastada">La señalética de los contenedores de basura se encuentra desgastada</option>';
-            HALLAZGO_options_str  += '<option value="Las áreas de almacén temporal de Residuos de Manejo Especial y Residuos Peligrosos se encuentran debidamente señalizadas y delimitadas">Las áreas de almacén temporal de Residuos de Manejo Especial y Residuos Peligrosos se encuentran debidamente señalizadas y delimitadas</option>';
-            HALLAZGO_options_str  += '<option value="Llenado incorrecto de bitacoras. Unidad 11">Llenado incorrecto de bitacoras. Unidad 11</option>';
-            HALLAZGO_options_str  += '<option value="Los baños estan sucios a pesar de que el registro que se tiene dice que se realizan constantemente la limpieza, se requiere cambio de calcomania para control de la limpieza.">Los baños estan sucios a pesar de que el registro que se tiene dice que se realizan constantemente la limpieza, se requiere cambio de calcomania para control de la limpieza.</option>';
-            HALLAZGO_options_str  += '<option value="Los check list estaban incompletos y llenados de manera incorrecta ya que la temporalidad no corresponde con el dia revisado. Maquinaria requiere mantenimiento">Los check list estaban incompletos y llenados de manera incorrecta ya que la temporalidad no corresponde con el dia revisado. Maquinaria requiere mantenimiento</option>';
-            HALLAZGO_options_str  += '<option value="Los contenedores para RSU se encuentran debidamente etiquetados en los diferentes frentes de trabajo, así como los residuos segregados de una manera correcta">Los contenedores para RSU se encuentran debidamente etiquetados en los diferentes frentes de trabajo, así como los residuos segregados de una manera correcta</option>';
-            HALLAZGO_options_str  += '<option value="Los formatos no se encuentran de acuerdo a la temporalidad correspondiente">Los formatos no se encuentran de acuerdo a la temporalidad correspondiente</option>';
-            HALLAZGO_options_str  += '<option value="Los generadores cuentan con charola antiderrames">Los generadores cuentan con charola antiderrames</option>';
-            HALLAZGO_options_str  += '<option value="Los sanitarios portátiles se encuentran limpios y el programa de limpieza se encuentra actualizado">Los sanitarios portátiles se encuentran limpios y el programa de limpieza se encuentra actualizado</option>';
-            HALLAZGO_options_str  += '<option value="Los vehículos cuentan con check list llenado de manera correcta y con kit antiderrames y exintor vigente en caso de alguna emergencia">Los vehículos cuentan con check list llenado de manera correcta y con kit antiderrames y exintor vigente en caso de alguna emergencia</option>';
-            HALLAZGO_options_str  += '<option value="Mal manejo de sustancias">Mal manejo de sustancias</option>';
-            HALLAZGO_options_str  += '<option value="Mancha de aceite en plataforma y falta de charola para plantas generadoras">Mancha de aceite en plataforma y falta de charola para plantas generadoras</option>';
-            HALLAZGO_options_str  += '<option value="Manchas de cemento, falta de orden y limpieza, liner desacomodado en máquina, falta señalizar contenedores agua, contenedor con aditivo sin etiqueta visible, olla de lavado presenta restos de aditivos">Manchas de cemento, falta de orden y limpieza, liner desacomodado en máquina, falta señalizar contenedores agua, contenedor con aditivo sin etiqueta visible, olla de lavado presenta restos de aditivos</option>';
-            HALLAZGO_options_str  += '<option value="Manchas en suelo de Cement Colorant, no se cuenta con hoja de seguridad ni charola de contención-Rosendo Peña">Manchas en suelo de Cement Colorant, no se cuenta con hoja de seguridad ni charola de contención-Rosendo Peña</option>';
-            HALLAZGO_options_str  += '<option value="Mantenimiento a la existente y señalización del área correspondiente.">Mantenimiento a la existente y señalización del área correspondiente.</option>';
-            HALLAZGO_options_str  += '<option value="Mantenimiento de señaletica de contenedores, residuos fuera de los contenedores. Considerar el vencimiento del permiso de FOJESA para la disposicion de aguas residuales.">Mantenimiento de señaletica de contenedores, residuos fuera de los contenedores. Considerar el vencimiento del permiso de FOJESA para la disposicion de aguas residuales.</option>';
-            HALLAZGO_options_str  += '<option value="Maquinaria con manchas de grasa, fuga en válvula, sin charola de contención.">Maquinaria con manchas de grasa, fuga en válvula, sin charola de contención.</option>';
-            HALLAZGO_options_str  += '<option value="Maquinaria trabajando sin acompañamiento de fauna">Maquinaria trabajando sin acompañamiento de fauna</option>';
-            HALLAZGO_options_str  += '<option value="Maquinaria, vehículos y equipo sin mantenimiento preventivo y/o registros actualizados. Kit antiderrame incompleto, reporta manguera dañada, sobre Km 6+608. Delante de zona de aerogenerador 3">Maquinaria, vehículos y equipo sin mantenimiento preventivo y/o registros actualizados. Kit antiderrame incompleto, reporta manguera dañada, sobre Km 6+608. Delante de zona de aerogenerador 3</option>';
-            HALLAZGO_options_str  += '<option value="Material vegetal producto del despalme se encuentra sin dispersar">Material vegetal producto del despalme se encuentra sin dispersar</option>';
-            HALLAZGO_options_str  += '<option value="Material vegetal sin triturar">Material vegetal sin triturar</option>';
-            HALLAZGO_options_str  += '<option value="Mejores practicas para evitar exposicion de raices durante la aplicación de riegos de auxilio.">Mejores practicas para evitar exposicion de raices durante la aplicación de riegos de auxilio.</option>';
-            HALLAZGO_options_str  += '<option value="Mezcla de RSU/RME/RP">Mezcla de RSU/RME/RP</option>';
-            HALLAZGO_options_str  += '<option value="Mochilas sobre el suelo, pueden ser refugio de fauna silvestre">Mochilas sobre el suelo, pueden ser refugio de fauna silvestre</option>';
-            HALLAZGO_options_str  += '<option value="Mochilas sobre rocas, pueden ser refugio de fauna silvestre">Mochilas sobre rocas, pueden ser refugio de fauna silvestre</option>';
-            HALLAZGO_options_str  += '<option value="Mochilas sobre rocas, pueden ser refugio de fauna silvestre, contenedor con liquido sin señalización">Mochilas sobre rocas, pueden ser refugio de fauna silvestre, contenedor con liquido sin señalización</option>';
-            HALLAZGO_options_str  += '<option value="Necesidad de seguimiento y capacitación para derribo direccionado">Necesidad de seguimiento y capacitación para derribo direccionado</option>';
-            HALLAZGO_options_str  += '<option value="No hay separación correcta de los Residuos">No hay separación correcta de los Residuos</option>';
-            HALLAZGO_options_str  += '<option value="No hay separación correcta de los Residuos. Se requiere capacitación">No hay separación correcta de los Residuos. Se requiere capacitación</option>';
-            HALLAZGO_options_str  += '<option value="No se ha realizado la dispersión de suelo producto de las actividades de despalme">No se ha realizado la dispersión de suelo producto de las actividades de despalme</option>';
-            HALLAZGO_options_str  += '<option value="Obras de conservación de suelo">Obras de conservación de suelo</option>';
-            HALLAZGO_options_str  += '<option value="Obras de drenaje">Obras de drenaje</option>';
-            HALLAZGO_options_str  += '<option value="Organizar el espacio y contenedores en Almacen de residuos peligrosos">Organizar el espacio y contenedores en Almacen de residuos peligrosos</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de Material Vegetal en la zona sin triturar">Presencia de Material Vegetal en la zona sin triturar</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de RSU">Presencia de RSU</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de RSU fuera de contenedor">Presencia de RSU fuera de contenedor</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de RSU y RME">Presencia de RSU y RME</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de Residuos de Manejo Especial (concreto)">Presencia de Residuos de Manejo Especial (concreto)</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de Residuos de Manejo Especial (madera)">Presencia de Residuos de Manejo Especial (madera)</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de Scrap y alambres suelo">Presencia de Scrap y alambres suelo</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de carrete y residuos, señaletica derribada">Presencia de carrete y residuos, señaletica derribada</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de colillas de cigarros">Presencia de colillas de cigarros</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de diversos residuos en la zona (madera, varillas, clavos, RSU)">Presencia de diversos residuos en la zona (madera, varillas, clavos, RSU)</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de individuos muertos, con estrés hídrico, afectados por fauna silvestre y con raiz desnuda expuesta">Presencia de individuos muertos, con estrés hídrico, afectados por fauna silvestre y con raiz desnuda expuesta</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de mochilas en el suelo o sobre piedras">Presencia de mochilas en el suelo o sobre piedras</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de orden y limpieza en sanitarios">Presencia de orden y limpieza en sanitarios</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos">Presencia de residuos</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos RME, RSU">Presencia de residuos RME, RSU</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos RME, RSU. (Colillas)">Presencia de residuos RME, RSU. (Colillas)</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos de madera">Presencia de residuos de madera</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos de manejo especial, vegetales, concreto, señalizar acopio de madera">Presencia de residuos de manejo especial, vegetales, concreto, señalizar acopio de madera</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos de manejo especial- Señalizar areas de acopio de materiales">Presencia de residuos de manejo especial- Señalizar areas de acopio de materiales</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos vegetales">Presencia de residuos vegetales</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos y falta de charola para planta generadora">Presencia de residuos y falta de charola para planta generadora</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de residuos, señaletica derribada y falta de señalización en contenedor">Presencia de residuos, señaletica derribada y falta de señalización en contenedor</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de restos de concreto">Presencia de restos de concreto</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de restos de concreto, RSU y RME">Presencia de restos de concreto, RSU y RME</option>';
-            HALLAZGO_options_str  += '<option value="Presencia de restos de concreto, residuos peligrosos y RSU. Atención inmediata ya que por la continuidad de trabajos puede incrementar por el involucramiento posterior de mas personal.">Presencia de restos de concreto, residuos peligrosos y RSU. Atención inmediata ya que por la continuidad de trabajos puede incrementar por el involucramiento posterior de mas personal.</option>';
-            HALLAZGO_options_str  += '<option value="Propiamente no se utiiliza un contenedor sino un plastico (hule-lona) que debe ser reemplazado porque se nota deterioro y ademas al utilizarse se debe de acondicionar correctamente para evitar incidentes.">Propiamente no se utiiliza un contenedor sino un plastico (hule-lona) que debe ser reemplazado porque se nota deterioro y ademas al utilizarse se debe de acondicionar correctamente para evitar incidentes.</option>';
-            HALLAZGO_options_str  += '<option value="RSU dispersos-Madera">RSU dispersos-Madera</option>';
-            HALLAZGO_options_str  += '<option value="Ramas de pinos colgando de individuos a bordo de carretera">Ramas de pinos colgando de individuos a bordo de carretera</option>';
-            HALLAZGO_options_str  += '<option value="Realizar el etiquetado final debido a las etiquetas temporales ya no son legibles">Realizar el etiquetado final debido a las etiquetas temporales ya no son legibles</option>';
-            HALLAZGO_options_str  += '<option value="Recoleccion de kit antiderrame">Recoleccion de kit antiderrame</option>';
-            HALLAZGO_options_str  += '<option value="Recolección de residuos de mezcla">Recolección de residuos de mezcla</option>';
-            HALLAZGO_options_str  += '<option value="Residuo plastico impregnado de aceite">Residuo plastico impregnado de aceite</option>';
-            HALLAZGO_options_str  += '<option value="Residuos de concreto en sitio y acopio de madera sin señalética">Residuos de concreto en sitio y acopio de madera sin señalética</option>';
-            HALLAZGO_options_str  += '<option value="Residuos de concreto y restos vegetales">Residuos de concreto y restos vegetales</option>';
-            HALLAZGO_options_str  += '<option value="Residuos de material vegetal">Residuos de material vegetal</option>';
-            HALLAZGO_options_str  += '<option value="Residuos dispersos">Residuos dispersos</option>';
-            HALLAZGO_options_str  += '<option value="Residuos dispersos-restos de mezcla-Ausencia de señalización de contenedores">Residuos dispersos-restos de mezcla-Ausencia de señalización de contenedores</option>';
-            HALLAZGO_options_str  += '<option value="Residuos en cunetas">Residuos en cunetas</option>';
-            HALLAZGO_options_str  += '<option value="Residuos fuera de los contenedores, incorrecta separación de residuos. Retiro y disposición correcta ya que debido a se encuentra en un ambiente natural, la fauna puede acercarse y dispersarla.">Residuos fuera de los contenedores, incorrecta separación de residuos. Retiro y disposición correcta ya que debido a se encuentra en un ambiente natural, la fauna puede acercarse y dispersarla.</option>';
-            HALLAZGO_options_str  += '<option value="Residuos plásticos quemados (RP)">Residuos plásticos quemados (RP)</option>';
-            HALLAZGO_options_str  += '<option value="Restos de cemento dispersos-RSU">Restos de cemento dispersos-RSU</option>';
-            HALLAZGO_options_str  += '<option value="Restos de cemento dispersos-RSU-Rosendo Peña">Restos de cemento dispersos-RSU-Rosendo Peña</option>';
-            HALLAZGO_options_str  += '<option value="Retirar del sitio y disponer correctamente el residuo de manejo especial. Evidenciar disposición y capacitación del personal respecto al hallazgo.">Retirar del sitio y disponer correctamente el residuo de manejo especial. Evidenciar disposición y capacitación del personal respecto al hallazgo.</option>';
-            HALLAZGO_options_str  += '<option value="Retirar residuos de concreto">Retirar residuos de concreto</option>';
-            HALLAZGO_options_str  += '<option value="Riego de viales">Riego de viales</option>';
-            HALLAZGO_options_str  += '<option value="Sanitario portatil derribado">Sanitario portatil derribado</option>';
-            HALLAZGO_options_str  += '<option value="Se debe señalizar y acordonar el área destinada para el acopio temporal de materiales. Proveer de contenedores especificos para los residuos debido a que no existen en el área. Falta orden y limpieza">Se debe señalizar y acordonar el área destinada para el acopio temporal de materiales. Proveer de contenedores especificos para los residuos debido a que no existen en el área. Falta orden y limpieza</option>';
-            HALLAZGO_options_str  += '<option value="Se detectaron Residuos de Manejo Especial (madera)">Se detectaron Residuos de Manejo Especial (madera)</option>';
-            HALLAZGO_options_str  += '<option value="Se detectaron Residuos de Manejo Especial (madera) en la zona sin delimitación y señalética">Se detectaron Residuos de Manejo Especial (madera) en la zona sin delimitación y señalética</option>';
-            HALLAZGO_options_str  += '<option value="Se detectaron diversos Residuos Sólidos Urbanos en el área">Se detectaron diversos Residuos Sólidos Urbanos en el área</option>';
-            HALLAZGO_options_str  += '<option value="Se detectaron diversos Residuos Sólidos Urbanos en el área y algunos de Manejo Especial (madera)">Se detectaron diversos Residuos Sólidos Urbanos en el área y algunos de Manejo Especial (madera)</option>';
-            HALLAZGO_options_str  += '<option value="Se detectaron manchas deribadas de un líqueo de aceite, a un costado del registro RMT-WTG27-01">Se detectaron manchas deribadas de un líqueo de aceite, a un costado del registro RMT-WTG27-01</option>';
-            HALLAZGO_options_str  += '<option value="Se detectaron materiales (cable, malla para delimitar) en sitio">Se detectaron materiales (cable, malla para delimitar) en sitio</option>';
-            HALLAZGO_options_str  += '<option value="Se detecto contenedor con agua no potable, sin tapa">Se detecto contenedor con agua no potable, sin tapa</option>';
-            HALLAZGO_options_str  += '<option value="Se detecto señaletica dentro del sanitario, este debe ser retirado y almacenado de manera correcta.">Se detecto señaletica dentro del sanitario, este debe ser retirado y almacenado de manera correcta.</option>';
-            HALLAZGO_options_str  += '<option value="Se detectó derrame de aceite">Se detectó derrame de aceite</option>';
-            HALLAZGO_options_str  += '<option value="Se encontraron individuos de Opuntia reubicados cuya etiqueta se encuentra colodada entre los cladodios, lo cual a largo plazo puede intereferir con el crecimiento de los individuos">Se encontraron individuos de Opuntia reubicados cuya etiqueta se encuentra colodada entre los cladodios, lo cual a largo plazo puede intereferir con el crecimiento de los individuos</option>';
-            HALLAZGO_options_str  += '<option value="Se encontró señalética derrivada">Se encontró señalética derrivada</option>';
-            HALLAZGO_options_str  += '<option value="Se encontró señalética en mal estado">Se encontró señalética en mal estado</option>';
-            HALLAZGO_options_str  += '<option value="Se encuentran RSU con una incorrecta clasificación, además de observarse en la zona Residuos de Manejo Especial (madera) sin disponer adecuadamente.">Se encuentran RSU con una incorrecta clasificación, además de observarse en la zona Residuos de Manejo Especial (madera) sin disponer adecuadamente.</option>';
-            HALLAZGO_options_str  += '<option value="Se encuentran diversos RSU en el sitio, además se observaron Residuos de Manejo Especial (madera).">Se encuentran diversos RSU en el sitio, además se observaron Residuos de Manejo Especial (madera).</option>';
-            HALLAZGO_options_str  += '<option value="Se necesita cambiar la señaletica de contenedores de RSU por desgaste natural">Se necesita cambiar la señaletica de contenedores de RSU por desgaste natural</option>';
-            HALLAZGO_options_str  += '<option value="Se observan Residuos de Manejo Especial (madera) en la zona">Se observan Residuos de Manejo Especial (madera) en la zona</option>';
-            HALLAZGO_options_str  += '<option value="Se observan individuos de flora reubicada con raíces expuestas y algunas terrazas individuales necesitan rehabilitación">Se observan individuos de flora reubicada con raíces expuestas y algunas terrazas individuales necesitan rehabilitación</option>';
-            HALLAZGO_options_str  += '<option value="Se observaron Residuos de Manejo Especial (concreto) fuera del sitio de almacén temporal">Se observaron Residuos de Manejo Especial (concreto) fuera del sitio de almacén temporal</option>';
-            HALLAZGO_options_str  += '<option value="Se observaron individuos pertenecientes al Programa de Reforestación sin terraza individual.">Se observaron individuos pertenecientes al Programa de Reforestación sin terraza individual.</option>';
-            HALLAZGO_options_str  += '<option value="Se observo que durante las actividades de mantenimineto a maquinaria hubo un derrame de aceite">Se observo que durante las actividades de mantenimineto a maquinaria hubo un derrame de aceite</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere agua para lavado de manos en sanitarios">Se requiere agua para lavado de manos en sanitarios</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere delimitación, señalización y disposicion correcta de residuos de concreto">Se requiere delimitación, señalización y disposicion correcta de residuos de concreto</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere levantamiento, picado y esparcido de material vegetal resultado del desmonte. Adicional se comento la importancia de mantener las estacas y respetar los limites marcados para la ejecución de las actividades">Se requiere levantamiento, picado y esparcido de material vegetal resultado del desmonte. Adicional se comento la importancia de mantener las estacas y respetar los limites marcados para la ejecución de las actividades</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere orden y limpieza">Se requiere orden y limpieza</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere reemplazo de linner impermeable">Se requiere reemplazo de linner impermeable</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere retirar carrete, cables y llantas">Se requiere retirar carrete, cables y llantas</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere retirar residuos vegetales">Se requiere retirar residuos vegetales</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere señaletica en algunas areas de almacenamiento de material">Se requiere señaletica en algunas areas de almacenamiento de material</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere señalización de áreas de acopio de material de manejo especial y de áreas de trabajo (Eduardo Jimenez-Gamboa)">Se requiere señalización de áreas de acopio de material de manejo especial y de áreas de trabajo (Eduardo Jimenez-Gamboa)</option>';
-            HALLAZGO_options_str  += '<option value="Se requiere señalizar contenedores de agua">Se requiere señalizar contenedores de agua</option>';
-            HALLAZGO_options_str  += '<option value="Segregación incorrecta de residuos-Ausencia de contenedores-Falta orden y limpieza.  (Eduardo Jimenez-Gamboa)">Segregación incorrecta de residuos-Ausencia de contenedores-Falta orden y limpieza.  (Eduardo Jimenez-Gamboa)</option>';
-            HALLAZGO_options_str  += '<option value="Segumiento al programa de residuos de manejo especial.">Segumiento al programa de residuos de manejo especial.</option>';
-            HALLAZGO_options_str  += '<option value="Separación correcta de residuos">Separación correcta de residuos</option>';
-            HALLAZGO_options_str  += '<option value="Señaletica derribada">Señaletica derribada</option>';
-            HALLAZGO_options_str  += '<option value="Señaletica en buen estado">Señaletica en buen estado</option>';
-            HALLAZGO_options_str  += '<option value="Señaletica en mal estado">Señaletica en mal estado</option>';
-            HALLAZGO_options_str  += '<option value="Señalizacion de zonas de riesgo y mezcla de materiales">Señalizacion de zonas de riesgo y mezcla de materiales</option>';
-            HALLAZGO_options_str  += '<option value="Suelo contaminado por derrame">Suelo contaminado por derrame</option>';
-            HALLAZGO_options_str  += '<option value="Triturado de material vegetal">Triturado de material vegetal</option>';
-            HALLAZGO_options_str  += '<option value="Uso correcto de charolas de contencion en generadores de luz y sustancias quimicas">Uso correcto de charolas de contencion en generadores de luz y sustancias quimicas</option>';
-            HALLAZGO_options_str  += '<option value="Uso incorrecto de implementos para control de derrames">Uso incorrecto de implementos para control de derrames</option>';
-            HALLAZGO_options_str  += '<option value="Vehiculos encendidos sin tener actividad. En este caso se trato de un proveedor de varillas, sin embargo se debe difundir esta acción de manera general ya que ademas se notaron vehiculos de Elecnor, Toral en esta misma situación durante la revisión en">Vehiculos encendidos sin tener actividad. En este caso se trato de un proveedor de varillas, sin embargo se debe difundir esta acción de manera general ya que ademas se notaron vehiculos de Elecnor, Toral en esta misma situación durante la revisión en</option>';
-            HALLAZGO_options_str  += '<option value="Vehículo con fuga de aceite, kit antiderrame en mal estado">Vehículo con fuga de aceite, kit antiderrame en mal estado</option>';
-            HALLAZGO_options_str  += '<option value="Vehículos funcionando mientras no sea necesario">Vehículos funcionando mientras no sea necesario</option>';
-            HALLAZGO_options_str  += '<option value="Vehículos sin verificación de chek list">Vehículos sin verificación de chek list</option>';
-            HALLAZGO_options_str  += '<option value="Vehículos sin verificación de chek list, se necesita mantenimiento ya que las pipas tienen fugas y tiran gran cantidad de agua.">Vehículos sin verificación de chek list, se necesita mantenimiento ya que las pipas tienen fugas y tiran gran cantidad de agua.</option>';
-            sel_HALLAZGO.innerHTML = HALLAZGO_options_str;
-            div_HALLAZGO.appendChild(sel_HALLAZGO);
-            var lab_HALLAZGO = document.createElement('div');
-            lab_HALLAZGO.innerHTML = 'HALLAZGO';
-            lab_HALLAZGO.className = 'filterlabel';
-            div_HALLAZGO.appendChild(lab_HALLAZGO);
-            var reset_HALLAZGO = document.createElement('div');
-            reset_HALLAZGO.innerHTML = 'clear filter';
-            reset_HALLAZGO.className = 'filterlabel';
-            reset_HALLAZGO.onclick = function() {
-                var options = document.getElementById("sel_HALLAZGO").options;
+            var div_FACTOR_AMB = document.createElement('div');
+            div_FACTOR_AMB.id = "div_FACTOR_AMB";
+            div_FACTOR_AMB.className= "filterselect";
+            document.getElementById("menu").appendChild(div_FACTOR_AMB);
+            sel_FACTOR_AMB = document.createElement('select');
+            sel_FACTOR_AMB.multiple = true;
+            sel_FACTOR_AMB.size = 8;
+            sel_FACTOR_AMB.id = "sel_FACTOR_AMB";
+            var FACTOR_AMB_options_str = "<option value='' unselected></option>";
+            sel_FACTOR_AMB.onchange = function(){filterFunc()};
+            FACTOR_AMB_options_str  += '<option value="NULL">NULL</option>';
+            FACTOR_AMB_options_str  += '<option value="Agua">Agua</option>';
+            FACTOR_AMB_options_str  += '<option value="Atmósfera">Atmósfera</option>';
+            FACTOR_AMB_options_str  += '<option value="Fauna">Fauna</option>';
+            FACTOR_AMB_options_str  += '<option value="Flora">Flora</option>';
+            FACTOR_AMB_options_str  += '<option value="Paisaje">Paisaje</option>';
+            FACTOR_AMB_options_str  += '<option value="Social">Social</option>';
+            FACTOR_AMB_options_str  += '<option value="Suelo">Suelo</option>';
+            sel_FACTOR_AMB.innerHTML = FACTOR_AMB_options_str;
+            div_FACTOR_AMB.appendChild(sel_FACTOR_AMB);
+            var lab_FACTOR_AMB = document.createElement('div');
+            lab_FACTOR_AMB.innerHTML = 'FACTOR_AMB';
+            lab_FACTOR_AMB.className = 'filterlabel';
+            div_FACTOR_AMB.appendChild(lab_FACTOR_AMB);
+            var reset_FACTOR_AMB = document.createElement('div');
+            reset_FACTOR_AMB.innerHTML = 'clear filter';
+            reset_FACTOR_AMB.className = 'filterlabel';
+            reset_FACTOR_AMB.onclick = function() {
+                var options = document.getElementById("sel_FACTOR_AMB").options;
                 for (var i=0; i < options.length; i++) {
                     options[i].selected = false;
                 }
                 filterFunc();
             };
-            div_HALLAZGO.appendChild(reset_HALLAZGO);
+            div_FACTOR_AMB.appendChild(reset_FACTOR_AMB);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
             var div_CONTRATA = document.createElement('div');
@@ -1006,90 +871,42 @@
             div_CONTRATA.appendChild(reset_CONTRATA);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
-            var div_FACTOR_AMB = document.createElement('div');
-            div_FACTOR_AMB.id = "div_FACTOR_AMB";
-            div_FACTOR_AMB.className= "filterselect";
-            document.getElementById("menu").appendChild(div_FACTOR_AMB);
-            sel_FACTOR_AMB = document.createElement('select');
-            sel_FACTOR_AMB.multiple = true;
-            sel_FACTOR_AMB.size = 8;
-            sel_FACTOR_AMB.id = "sel_FACTOR_AMB";
-            var FACTOR_AMB_options_str = "<option value='' unselected></option>";
-            sel_FACTOR_AMB.onchange = function(){filterFunc()};
-            FACTOR_AMB_options_str  += '<option value="NULL">NULL</option>';
-            FACTOR_AMB_options_str  += '<option value="Agua">Agua</option>';
-            FACTOR_AMB_options_str  += '<option value="Atmósfera">Atmósfera</option>';
-            FACTOR_AMB_options_str  += '<option value="Fauna">Fauna</option>';
-            FACTOR_AMB_options_str  += '<option value="Flora">Flora</option>';
-            FACTOR_AMB_options_str  += '<option value="Paisaje">Paisaje</option>';
-            FACTOR_AMB_options_str  += '<option value="Social">Social</option>';
-            FACTOR_AMB_options_str  += '<option value="Suelo">Suelo</option>';
-            sel_FACTOR_AMB.innerHTML = FACTOR_AMB_options_str;
-            div_FACTOR_AMB.appendChild(sel_FACTOR_AMB);
-            var lab_FACTOR_AMB = document.createElement('div');
-            lab_FACTOR_AMB.innerHTML = 'FACTOR_AMB';
-            lab_FACTOR_AMB.className = 'filterlabel';
-            div_FACTOR_AMB.appendChild(lab_FACTOR_AMB);
-            var reset_FACTOR_AMB = document.createElement('div');
-            reset_FACTOR_AMB.innerHTML = 'clear filter';
-            reset_FACTOR_AMB.className = 'filterlabel';
-            reset_FACTOR_AMB.onclick = function() {
-                var options = document.getElementById("sel_FACTOR_AMB").options;
+            var div_PROGRAMA = document.createElement('div');
+            div_PROGRAMA.id = "div_PROGRAMA";
+            div_PROGRAMA.className= "filterselect";
+            document.getElementById("menu").appendChild(div_PROGRAMA);
+            sel_PROGRAMA = document.createElement('select');
+            sel_PROGRAMA.multiple = true;
+            sel_PROGRAMA.size = 9;
+            sel_PROGRAMA.id = "sel_PROGRAMA";
+            var PROGRAMA_options_str = "<option value='' unselected></option>";
+            sel_PROGRAMA.onchange = function(){filterFunc()};
+            PROGRAMA_options_str  += '<option value="NULL">NULL</option>';
+            PROGRAMA_options_str  += '<option value="ETJ">ETJ</option>';
+            PROGRAMA_options_str  += '<option value="Plan de protección y manejo para las corrientes intermitentes">Plan de protección y manejo para las corrientes intermitentes</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Conservación y Restauración de Suelos">Programa de Conservación y Restauración de Suelos</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Manejo Integral de Residuos">Programa de Manejo Integral de Residuos</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Reforestación">Programa de Reforestación</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Rescate y Reubicación de Flora">Programa de Rescate y Reubicación de Flora</option>';
+            PROGRAMA_options_str  += '<option value="Programa de ahuyentamiento, rescate y reubicación de fauna silvestre">Programa de ahuyentamiento, rescate y reubicación de fauna silvestre</option>';
+            PROGRAMA_options_str  += '<option value="Programa de conservación y restauración de suelos">Programa de conservación y restauración de suelos</option>';
+            sel_PROGRAMA.innerHTML = PROGRAMA_options_str;
+            div_PROGRAMA.appendChild(sel_PROGRAMA);
+            var lab_PROGRAMA = document.createElement('div');
+            lab_PROGRAMA.innerHTML = 'PROGRAMA';
+            lab_PROGRAMA.className = 'filterlabel';
+            div_PROGRAMA.appendChild(lab_PROGRAMA);
+            var reset_PROGRAMA = document.createElement('div');
+            reset_PROGRAMA.innerHTML = 'clear filter';
+            reset_PROGRAMA.className = 'filterlabel';
+            reset_PROGRAMA.onclick = function() {
+                var options = document.getElementById("sel_PROGRAMA").options;
                 for (var i=0; i < options.length; i++) {
                     options[i].selected = false;
                 }
                 filterFunc();
             };
-            div_FACTOR_AMB.appendChild(reset_FACTOR_AMB);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_IMPACTO_PO = document.createElement('div');
-            div_IMPACTO_PO.id = "div_IMPACTO_PO";
-            div_IMPACTO_PO.className= "filterselect";
-            document.getElementById("menu").appendChild(div_IMPACTO_PO);
-            sel_IMPACTO_PO = document.createElement('select');
-            sel_IMPACTO_PO.multiple = true;
-            sel_IMPACTO_PO.size = 10;
-            sel_IMPACTO_PO.id = "sel_IMPACTO_PO";
-            var IMPACTO_PO_options_str = "<option value='' unselected></option>";
-            sel_IMPACTO_PO.onchange = function(){filterFunc()};
-            IMPACTO_PO_options_str  += '<option value="NULL">NULL</option>';
-            IMPACTO_PO_options_str  += '<option value="AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DE CUERPOS TEMPORALES DE AGUA SUPERFICIAL PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG1)">AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DE CUERPOS TEMPORALES DE AGUA SUPERFICIAL PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG1)</option>';
-            IMPACTO_PO_options_str  += '<option value="AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DEL AGUA SUBTERRÁNEA PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG2)">AFECTACIÓN DE LAS CARACTERÍSTICAS FISICOQUÍMICAS DEL AGUA SUBTERRÁNEA PROVOCADOS POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSOS (AG2)</option>';
-            IMPACTO_PO_options_str  += '<option value="AFECTACIÓN DEL SUELO POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSO (SU2)">AFECTACIÓN DEL SUELO POR GENERACIÓN MANEJO, ALMACENAMIENTO Y DISPOSICIÓN INADECUADOS DE RESIDUOS SÓLIDOS, LÍQUIDOS, DE MANEJO ESPECIAL Y PELIGROSO (SU2)</option>';
-            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DE LA CALIDAD DEL AIRE POR GENERACIÓN Y DISPERSIÓN DE PARTÍCULAS SUSPENDIDAS (ATM2)">ALTERACIÓN DE LA CALIDAD DEL AIRE POR GENERACIÓN Y DISPERSIÓN DE PARTÍCULAS SUSPENDIDAS (ATM2)</option>';
-            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DE LA CALIDAD DEL AIRE POR LA GENERACIÓN DE EMISIONES A LA ATMÓSFERA (ATM1">ALTERACIÓN DE LA CALIDAD DEL AIRE POR LA GENERACIÓN DE EMISIONES A LA ATMÓSFERA (ATM1</option>';
-            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DE LA CALIDAD PAISAJÍSTICA POR LA INTERVENCIÓN DE COMPONENTES AJENOS (PA1)">ALTERACIÓN DE LA CALIDAD PAISAJÍSTICA POR LA INTERVENCIÓN DE COMPONENTES AJENOS (PA1)</option>';
-            IMPACTO_PO_options_str  += '<option value="ALTERACIÓN DEL PAISAJE">ALTERACIÓN DEL PAISAJE</option>';
-            IMPACTO_PO_options_str  += '<option value="AUSENCIA DE SEGUIMIENTO A MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME">AUSENCIA DE SEGUIMIENTO A MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME</option>';
-            IMPACTO_PO_options_str  += '<option value="Alteración de la calidad del aire por la generación de emisiones a la atmósfera. (ATM1)">Alteración de la calidad del aire por la generación de emisiones a la atmósfera. (ATM1)</option>';
-            IMPACTO_PO_options_str  += '<option value="CAIDA DE FAUNA SILVESTRE (PRINCIPALMENTE AVES) Y MUERTE DE LOS INDIVIDUOS AL QUEDARSE ATRAPADOS EN EL CONTENEDOR">CAIDA DE FAUNA SILVESTRE (PRINCIPALMENTE AVES) Y MUERTE DE LOS INDIVIDUOS AL QUEDARSE ATRAPADOS EN EL CONTENEDOR</option>';
-            IMPACTO_PO_options_str  += '<option value="ENCUENTRO/INCIDENTE CON FAUNA NOCIVA O DE INTERES TOXICOLOGICO">ENCUENTRO/INCIDENTE CON FAUNA NOCIVA O DE INTERES TOXICOLOGICO</option>';
-            IMPACTO_PO_options_str  += '<option value="INCREMENTO EN LOS PROCESOS EROSIVOS POR CAMBIO DE USO DEL SUELO">INCREMENTO EN LOS PROCESOS EROSIVOS POR CAMBIO DE USO DEL SUELO</option>';
-            IMPACTO_PO_options_str  += '<option value="MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME Y CONTAMINACION ATMOSFERICA">MANTENIMIENTO VEHICULAR Y AFECTACION AL SUELO POR DERRAME Y CONTAMINACION ATMOSFERICA</option>';
-            IMPACTO_PO_options_str  += '<option value="MODIFICACIÓN DEL RELIEVE NATURAL POR ACCIONES DE DESPALME Y MOVIMIENTOS DE TIERRA (GE1) ETAPA: PREPARACIÓN DEL SITIO, CONSTRUCCIÓN, OPERACIÓN Y MANTENIMIENTO ABREVIATURAS A LOS CRITERIOS DE EVALUACIÓN PARA LAS MEDIDAS DE MITIGACIÓN">MODIFICACIÓN DEL RELIEVE NATURAL POR ACCIONES DE DESPALME Y MOVIMIENTOS DE TIERRA (GE1) ETAPA: PREPARACIÓN DEL SITIO, CONSTRUCCIÓN, OPERACIÓN Y MANTENIMIENTO ABREVIATURAS A LOS CRITERIOS DE EVALUACIÓN PARA LAS MEDIDAS DE MITIGACIÓN</option>';
-            IMPACTO_PO_options_str  += '<option value="PERDIDA DE INDIVIDUOS RESCATADOS-INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO">PERDIDA DE INDIVIDUOS RESCATADOS-INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO</option>';
-            IMPACTO_PO_options_str  += '<option value="PERDIDA DE INDIVIDUOS RESCATADOS/REFORESTADOS - INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO">PERDIDA DE INDIVIDUOS RESCATADOS/REFORESTADOS - INCUMPLIMIENTO CON LOS INDICADORES DEL PROGRAMA ESPECIFICO</option>';
-            IMPACTO_PO_options_str  += '<option value="PÉRDIDA DE LA COBERTURA VEGETAL">PÉRDIDA DE LA COBERTURA VEGETAL</option>';
-            IMPACTO_PO_options_str  += '<option value="PÉRDIDA DE LA COBERTURA VEGETAL EN1,018.00 HECTÁREAS POR CAMBIO DE USO DEL SUELO (F1)">PÉRDIDA DE LA COBERTURA VEGETAL EN1,018.00 HECTÁREAS POR CAMBIO DE USO DEL SUELO (F1)</option>';
-            IMPACTO_PO_options_str  += '<option value="USO ERRONEO DE CONTENIDO/CONFUSION AL PERSONAL">USO ERRONEO DE CONTENIDO/CONFUSION AL PERSONAL</option>';
-            sel_IMPACTO_PO.innerHTML = IMPACTO_PO_options_str;
-            div_IMPACTO_PO.appendChild(sel_IMPACTO_PO);
-            var lab_IMPACTO_PO = document.createElement('div');
-            lab_IMPACTO_PO.innerHTML = 'IMPACTO_PO';
-            lab_IMPACTO_PO.className = 'filterlabel';
-            div_IMPACTO_PO.appendChild(lab_IMPACTO_PO);
-            var reset_IMPACTO_PO = document.createElement('div');
-            reset_IMPACTO_PO.innerHTML = 'clear filter';
-            reset_IMPACTO_PO.className = 'filterlabel';
-            reset_IMPACTO_PO.onclick = function() {
-                var options = document.getElementById("sel_IMPACTO_PO").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_IMPACTO_PO.appendChild(reset_IMPACTO_PO);
+            div_PROGRAMA.appendChild(reset_PROGRAMA);
         </script>
     </body>
 </html>
