@@ -1,0 +1,822 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/L.Control.Layers.Tree.css">
+        <link rel="stylesheet" href="css/L.Control.Locate.min.css">
+        <link rel="stylesheet" href="css/qgis2web.css">
+        <link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/filter.css">
+<link rel="stylesheet" href="css/nouislider.min.css">
+        <link rel="stylesheet" href="css/leaflet-control-geocoder.Geocoder.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        html, body, #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/L.Control.Layers.Tree.min.js"></script>
+        <script src="js/L.Control.Locate.min.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-control-geocoder.Geocoder.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="js/tailDT.js"></script>
+<script src="js/nouislider.min.js"></script>
+<script src="js/wNumb.js"></script>
+        <script src="data/AreaProyecto_1.js"></script>
+        <script src="data/HallazgosCimarrn_2.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString' || e.target.feature.geometry.type === 'MultiLineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:false, maxZoom:28, minZoom:1
+        }).fitBounds([[32.292551215074205,-116.25213100058599],[32.65824815264535,-115.6672601086537]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        // remove popup's row if "visible-with-data"
+        function removeEmptyRowsFromPopupContent(content, feature) {
+         var tempDiv = document.createElement('div');
+         tempDiv.innerHTML = content;
+         var rows = tempDiv.querySelectorAll('tr');
+         for (var i = 0; i < rows.length; i++) {
+             var td = rows[i].querySelector('td.visible-with-data');
+             var key = td ? td.id : '';
+             if (td && td.classList.contains('visible-with-data') && feature.properties[key] == null) {
+                 rows[i].parentNode.removeChild(rows[i]);
+             }
+         }
+         return tempDiv.innerHTML;
+        }
+        // add class to format popup if it contains media
+		function addClassToPopupIfMedia(content, popup) {
+			var tempDiv = document.createElement('div');
+			tempDiv.innerHTML = content;
+			if (tempDiv.querySelector('td img')) {
+				popup._contentNode.classList.add('media');
+					// Delay to force the redraw
+					setTimeout(function() {
+						popup.update();
+					}, 10);
+			} else {
+				popup._contentNode.classList.remove('media');
+			}
+		}
+        var zoomControl = L.control.zoom({
+            position: 'topleft'
+        }).addTo(map);
+        L.control.locate({locateOptions: {maxZoom: 19}}).addTo(map);
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0].className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        map.createPane('pane_ESRISatellite_0');
+        map.getPane('pane_ESRISatellite_0').style.zIndex = 400;
+        var layer_ESRISatellite_0 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            pane: 'pane_ESRISatellite_0',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 20
+        });
+        layer_ESRISatellite_0;
+        map.addLayer(layer_ESRISatellite_0);
+        function pop_AreaProyecto_1(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">area_ha</th>\
+                        <td class="visible-with-data" id="area_ha">' + (feature.properties['area_ha'] !== null ? autolinker.link(String(feature.properties['area_ha']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Name</th>\
+                        <td class="visible-with-data" id="Name">' + (feature.properties['Name'] !== null ? autolinker.link(String(feature.properties['Name']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_AreaProyecto_1_0() {
+            return {
+                pane: 'pane_AreaProyecto_1',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(91,90,89,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_AreaProyecto_1');
+        map.getPane('pane_AreaProyecto_1').style.zIndex = 401;
+        map.getPane('pane_AreaProyecto_1').style['mix-blend-mode'] = 'normal';
+        var layer_AreaProyecto_1 = new L.geoJson(json_AreaProyecto_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_AreaProyecto_1',
+            layerName: 'layer_AreaProyecto_1',
+            pane: 'pane_AreaProyecto_1',
+            onEachFeature: pop_AreaProyecto_1,
+            style: style_AreaProyecto_1_0,
+        });
+        bounds_group.addLayer(layer_AreaProyecto_1);
+        map.addLayer(layer_AreaProyecto_1);
+        function pop_HallazgosCimarrn_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (var i in e.target._eventParents) {
+                        if (typeof e.target._eventParents[i].resetStyle === 'function') {
+                            e.target._eventParents[i].resetStyle(e.target);
+                        }
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <th scope="row">ï»¿ID</th>\
+                        <td class="visible-with-data" id="ï»¿ID">' + (feature.properties['ï»¿ID'] !== null ? autolinker.link(String(feature.properties['ï»¿ID']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">X</th>\
+                        <td class="visible-with-data" id="X">' + (feature.properties['X'] !== null ? autolinker.link(String(feature.properties['X']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Y</th>\
+                        <td class="visible-with-data" id="Y">' + (feature.properties['Y'] !== null ? autolinker.link(String(feature.properties['Y']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ZONA_DE_PR</th>\
+                        <td class="visible-with-data" id="ZONA_DE_PR">' + (feature.properties['ZONA_DE_PR'] !== null ? autolinker.link(String(feature.properties['ZONA_DE_PR']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">FECHA</th>\
+                        <td class="visible-with-data" id="FECHA">' + (feature.properties['FECHA'] !== null ? autolinker.link(String(feature.properties['FECHA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CONTRATA</th>\
+                        <td class="visible-with-data" id="CONTRATA">' + (feature.properties['CONTRATA'] !== null ? autolinker.link(String(feature.properties['CONTRATA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">TÉRMINO</th>\
+                        <td class="visible-with-data" id="TÉRMINO">' + (feature.properties['TÉRMINO'] !== null ? autolinker.link(String(feature.properties['TÉRMINO']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">CONDICIONA</th>\
+                        <td class="visible-with-data" id="CONDICIONA">' + (feature.properties['CONDICIONA'] !== null ? autolinker.link(String(feature.properties['CONDICIONA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PROGRAMA</th>\
+                        <td class="visible-with-data" id="PROGRAMA">' + (feature.properties['PROGRAMA'] !== null ? autolinker.link(String(feature.properties['PROGRAMA']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">FACTOR_AMB</th>\
+                        <td class="visible-with-data" id="FACTOR_AMB">' + (feature.properties['FACTOR_AMB'] !== null ? autolinker.link(String(feature.properties['FACTOR_AMB']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['CLASIFICAC'] !== null ? autolinker.link(String(feature.properties['CLASIFICAC']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['ESTATUS'] !== null ? autolinker.link(String(feature.properties['ESTATUS']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['HALLAZGO'] !== null ? autolinker.link(String(feature.properties['HALLAZGO']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['IMPACTO_PO'] !== null ? autolinker.link(String(feature.properties['IMPACTO_PO']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Medidas'] !== null ? autolinker.link(String(feature.properties['Medidas']).replace(/'/g, '\'').toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            var content = removeEmptyRowsFromPopupContent(popupContent, feature);
+			layer.on('popupopen', function(e) {
+				addClassToPopupIfMedia(content, e.popup);
+			});
+			layer.bindPopup(content, { maxHeight: 400 });
+        }
+
+        function style_HallazgosCimarrn_2_0(feature) {
+            switch(String(feature.properties['FACTOR_AMB'])) {
+                case 'Agua':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(9,84,189,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Atmósfera':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(200,198,196,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Fauna':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(255,127,0,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Flora':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(128,195,41,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Paisaje':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(63,231,195,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Social':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(153,124,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Suelo':
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,88,11,1.0)',
+                interactive: true,
+            }
+                    break;
+                default:
+                    return {
+                pane: 'pane_HallazgosCimarrn_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(33,213,42,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_HallazgosCimarrn_2');
+        map.getPane('pane_HallazgosCimarrn_2').style.zIndex = 402;
+        map.getPane('pane_HallazgosCimarrn_2').style['mix-blend-mode'] = 'normal';
+        var layer_HallazgosCimarrn_2 = new L.geoJson(json_HallazgosCimarrn_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_HallazgosCimarrn_2',
+            layerName: 'layer_HallazgosCimarrn_2',
+            pane: 'pane_HallazgosCimarrn_2',
+            onEachFeature: pop_HallazgosCimarrn_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_HallazgosCimarrn_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_HallazgosCimarrn_2);
+        map.addLayer(layer_HallazgosCimarrn_2);
+        var osmGeocoder = new L.Control.Geocoder({
+            collapsed: true,
+            position: 'topleft',
+            text: 'Search',
+            title: 'Testing'
+        }).addTo(map);
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .className += ' fa fa-search';
+        document.getElementsByClassName('leaflet-control-geocoder-icon')[0]
+        .title += 'Search for a place';
+        var overlaysTree = [
+            {label: 'Hallazgos Cimarrón<br /><table><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Agua0.png" /></td><td>Agua</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Atmósfera1.png" /></td><td>Atmósfera</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Fauna2.png" /></td><td>Fauna</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Flora3.png" /></td><td>Flora</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Paisaje4.png" /></td><td>Paisaje</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Social5.png" /></td><td>Social</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_Suelo6.png" /></td><td>Suelo</td></tr><tr><td style="text-align: center;"><img src="legend/HallazgosCimarrn_2_7.png" /></td><td></td></tr></table>', layer: layer_HallazgosCimarrn_2},
+            {label: '<img src="legend/AreaProyecto_1.png" /> Area Proyecto', layer: layer_AreaProyecto_1},
+            {label: "ESRI Satellite", layer: layer_ESRISatellite_0, radioGroup: 'bm' },]
+        var lay = L.control.layers.tree(null, overlaysTree,{
+            //namedToggle: true,
+            //selectorBack: false,
+            //closedSymbol: '&#8862; &#x1f5c0;',
+            //openedSymbol: '&#8863; &#x1f5c1;',
+            //collapseAll: 'Collapse all',
+            //expandAll: 'Expand all',
+            collapsed: true,
+        });
+        lay.addTo(map);
+        setBounds();
+        var mapDiv = document.getElementById('map');
+        var row = document.createElement('div');
+        row.className="row";
+        row.id="all";
+        row.style.height = "100%";
+        var col1 = document.createElement('div');
+        col1.className="col9";
+        col1.id = "mapWindow";
+        col1.style.height = "99%";
+        col1.style.width = "80%";
+        col1.style.display = "inline-block";
+        var col2 = document.createElement('div');
+        col2.className="col3";
+        col2.id = "menu";
+        col2.style.display = "inline-block";
+        mapDiv.parentNode.insertBefore(row, mapDiv);
+        document.getElementById("all").appendChild(col1);
+        document.getElementById("all").appendChild(col2);
+        col1.appendChild(mapDiv)
+        var Filters = {"FACTOR_AMB": "str","FECHA": "str","CONTRATA": "str","ZONA_DE_PR": "str"};
+        function filterFunc() {
+          map.eachLayer(function(lyr){
+          if ("options" in lyr && "dataVar" in lyr["options"]){
+            features = this[lyr["options"]["dataVar"]].features.slice(0);
+            try{
+              for (key in Filters){
+                keyS = key.replace(/[^a-zA-Z0-9_]/g, "")
+                if (Filters[key] == "str" || Filters[key] == "bool"){
+                  var selection = [];
+                  var options = document.getElementById("sel_" + keyS).options
+                  for (var i=0; i < options.length; i++) {
+                    if (options[i].selected) selection.push(options[i].value);
+                  }
+                    try{
+                      if (key in features[0].properties){
+                        for (i = features.length - 1;
+                          i >= 0; --i){
+                          if (selection.indexOf(
+                          features[i].properties[key])<0
+                          && selection.length>0) {
+                          features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                  }
+                }
+                if (Filters[key] == "int"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (parseInt(features[i].properties[key])
+                          < sliderVals[0]
+                          || parseInt(features[i].properties[key])
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "real"){
+                  sliderVals =  document.getElementById(
+                    "div_" + keyS).noUiSlider.get();
+                  try{
+                    if (key in features[0].properties){
+                    for (i = features.length - 1; i >= 0; --i){
+                      if (features[i].properties[key]
+                          < sliderVals[0]
+                          || features[i].properties[key]
+                          > sliderVals[1]){
+                            features.splice(i,1);
+                          }
+                        }
+                      }
+                    } catch(err){
+                    }
+                  }
+                if (Filters[key] == "date"
+                  || Filters[key] == "datetime"
+                  || Filters[key] == "time"){
+                  try{
+                    if (key in features[0].properties){
+                      HTMLkey = key.replace(/[&\/\\#,+()$~%.'":*?<>{} ]/g, '');
+                      startdate = document.getElementById("dat_" +
+                        HTMLkey + "_date1").value.replace(" ", "T");
+                      enddate = document.getElementById("dat_" +
+                        HTMLkey + "_date2").value.replace(" ", "T");
+                      for (i = features.length - 1; i >= 0; --i){
+                        if (features[i].properties[key] < startdate
+                          || features[i].properties[key] > enddate){
+                          features.splice(i,1);
+                        }
+                      }
+                    }
+                  } catch(err){
+                  }
+                }
+              }
+            } catch(err){
+            }
+          this[lyr["options"]["layerName"]].clearLayers();
+          this[lyr["options"]["layerName"]].addData(features);
+          }
+          })
+        }
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_FACTOR_AMB = document.createElement('div');
+            div_FACTOR_AMB.id = "div_FACTOR_AMB";
+            div_FACTOR_AMB.className= "filterselect";
+            document.getElementById("menu").appendChild(div_FACTOR_AMB);
+            sel_FACTOR_AMB = document.createElement('select');
+            sel_FACTOR_AMB.multiple = true;
+            sel_FACTOR_AMB.size = 8;
+            sel_FACTOR_AMB.id = "sel_FACTOR_AMB";
+            var FACTOR_AMB_options_str = "<option value='' unselected></option>";
+            sel_FACTOR_AMB.onchange = function(){filterFunc()};
+            FACTOR_AMB_options_str  += '<option value="NULL">NULL</option>';
+            FACTOR_AMB_options_str  += '<option value="Agua">Agua</option>';
+            FACTOR_AMB_options_str  += '<option value="Atmósfera">Atmósfera</option>';
+            FACTOR_AMB_options_str  += '<option value="Fauna">Fauna</option>';
+            FACTOR_AMB_options_str  += '<option value="Flora">Flora</option>';
+            FACTOR_AMB_options_str  += '<option value="Paisaje">Paisaje</option>';
+            FACTOR_AMB_options_str  += '<option value="Social">Social</option>';
+            FACTOR_AMB_options_str  += '<option value="Suelo">Suelo</option>';
+            sel_FACTOR_AMB.innerHTML = FACTOR_AMB_options_str;
+            div_FACTOR_AMB.appendChild(sel_FACTOR_AMB);
+            var lab_FACTOR_AMB = document.createElement('div');
+            lab_FACTOR_AMB.innerHTML = 'FACTOR_AMB';
+            lab_FACTOR_AMB.className = 'filterlabel';
+            div_FACTOR_AMB.appendChild(lab_FACTOR_AMB);
+            var reset_FACTOR_AMB = document.createElement('div');
+            reset_FACTOR_AMB.innerHTML = 'clear filter';
+            reset_FACTOR_AMB.className = 'filterlabel';
+            reset_FACTOR_AMB.onclick = function() {
+                var options = document.getElementById("sel_FACTOR_AMB").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_FACTOR_AMB.appendChild(reset_FACTOR_AMB);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_FECHA = document.createElement('div');
+            div_FECHA.id = "div_FECHA";
+            div_FECHA.className= "filterselect";
+            document.getElementById("menu").appendChild(div_FECHA);
+            sel_FECHA = document.createElement('select');
+            sel_FECHA.multiple = true;
+            sel_FECHA.size = 10;
+            sel_FECHA.id = "sel_FECHA";
+            var FECHA_options_str = "<option value='' unselected></option>";
+            sel_FECHA.onchange = function(){filterFunc()};
+            FECHA_options_str  += '<option value="03-09-2024">03-09-2024</option>';
+            FECHA_options_str  += '<option value="04-09-2024">04-09-2024</option>';
+            FECHA_options_str  += '<option value="04/02/2025">04/02/2025</option>';
+            FECHA_options_str  += '<option value="05/02/2025">05/02/2025</option>';
+            FECHA_options_str  += '<option value="05/09-2024">05/09-2024</option>';
+            FECHA_options_str  += '<option value="06/02/2025">06/02/2025</option>';
+            FECHA_options_str  += '<option value="07/02/2025">07/02/2025</option>';
+            FECHA_options_str  += '<option value="07/07/2025">07/07/2025</option>';
+            FECHA_options_str  += '<option value="08/07/2025">08/07/2025</option>';
+            FECHA_options_str  += '<option value="09/07/2025">09/07/2025</option>';
+            FECHA_options_str  += '<option value="10/07/2025">10/07/2025</option>';
+            FECHA_options_str  += '<option value="11/07/2025">11/07/2025</option>';
+            FECHA_options_str  += '<option value="11/10/2025">11/10/2025</option>';
+            FECHA_options_str  += '<option value="11/11/2025">11/11/2025</option>';
+            FECHA_options_str  += '<option value="11/12/2025">11/12/2025</option>';
+            FECHA_options_str  += '<option value="13/11/2025">13/11/2025</option>';
+            FECHA_options_str  += '<option value="25-11-24">25-11-24</option>';
+            FECHA_options_str  += '<option value="26/11/2024">26/11/2024</option>';
+            FECHA_options_str  += '<option value="27/11/2024">27/11/2024</option>';
+            FECHA_options_str  += '<option value="28/11/2024">28/11/2024</option>';
+            FECHA_options_str  += '<option value="29/11/2024">29/11/2024</option>';
+            sel_FECHA.innerHTML = FECHA_options_str;
+            div_FECHA.appendChild(sel_FECHA);
+            var lab_FECHA = document.createElement('div');
+            lab_FECHA.innerHTML = 'FECHA';
+            lab_FECHA.className = 'filterlabel';
+            div_FECHA.appendChild(lab_FECHA);
+            var reset_FECHA = document.createElement('div');
+            reset_FECHA.innerHTML = 'clear filter';
+            reset_FECHA.className = 'filterlabel';
+            reset_FECHA.onclick = function() {
+                var options = document.getElementById("sel_FECHA").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_FECHA.appendChild(reset_FECHA);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_CONTRATA = document.createElement('div');
+            div_CONTRATA.id = "div_CONTRATA";
+            div_CONTRATA.className= "filterselect";
+            document.getElementById("menu").appendChild(div_CONTRATA);
+            sel_CONTRATA = document.createElement('select');
+            sel_CONTRATA.multiple = true;
+            sel_CONTRATA.size = 10;
+            sel_CONTRATA.id = "sel_CONTRATA";
+            var CONTRATA_options_str = "<option value='' unselected></option>";
+            sel_CONTRATA.onchange = function(){filterFunc()};
+            CONTRATA_options_str  += '<option value="CEMEX">CEMEX</option>';
+            CONTRATA_options_str  += '<option value="CEMEX-SAN JUAN-GAMBOA">CEMEX-SAN JUAN-GAMBOA</option>';
+            CONTRATA_options_str  += '<option value="CONZA">CONZA</option>';
+            CONTRATA_options_str  += '<option value="ELECNOR">ELECNOR</option>';
+            CONTRATA_options_str  += '<option value="ELECNOR-EL SAUZ">ELECNOR-EL SAUZ</option>';
+            CONTRATA_options_str  += '<option value="ELECNOR-SACH">ELECNOR-SACH</option>';
+            CONTRATA_options_str  += '<option value="GAMBOA">GAMBOA</option>';
+            CONTRATA_options_str  += '<option value="HEAVY WORKS">HEAVY WORKS</option>';
+            CONTRATA_options_str  += '<option value="SACH">SACH</option>';
+            CONTRATA_options_str  += '<option value="SAN JUAN">SAN JUAN</option>';
+            CONTRATA_options_str  += '<option value="SINDICATO">SINDICATO</option>';
+            CONTRATA_options_str  += '<option value="TORAL">TORAL</option>';
+            CONTRATA_options_str  += '<option value="TRANSBIAGA">TRANSBIAGA</option>';
+            CONTRATA_options_str  += '<option value="VESTAS">VESTAS</option>';
+            sel_CONTRATA.innerHTML = CONTRATA_options_str;
+            div_CONTRATA.appendChild(sel_CONTRATA);
+            var lab_CONTRATA = document.createElement('div');
+            lab_CONTRATA.innerHTML = 'CONTRATA';
+            lab_CONTRATA.className = 'filterlabel';
+            div_CONTRATA.appendChild(lab_CONTRATA);
+            var reset_CONTRATA = document.createElement('div');
+            reset_CONTRATA.innerHTML = 'clear filter';
+            reset_CONTRATA.className = 'filterlabel';
+            reset_CONTRATA.onclick = function() {
+                var options = document.getElementById("sel_CONTRATA").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_CONTRATA.appendChild(reset_CONTRATA);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_ZONA_DE_PR = document.createElement('div');
+            div_ZONA_DE_PR.id = "div_ZONA_DE_PR";
+            div_ZONA_DE_PR.className= "filterselect";
+            document.getElementById("menu").appendChild(div_ZONA_DE_PR);
+            sel_ZONA_DE_PR = document.createElement('select');
+            sel_ZONA_DE_PR.multiple = true;
+            sel_ZONA_DE_PR.size = 10;
+            sel_ZONA_DE_PR.id = "sel_ZONA_DE_PR";
+            var ZONA_DE_PR_options_str = "<option value='' unselected></option>";
+            sel_ZONA_DE_PR.onchange = function(){filterFunc()};
+            ZONA_DE_PR_options_str  += '<option value="Almacen de residuos peligrosos">Almacen de residuos peligrosos</option>';
+            ZONA_DE_PR_options_str  += '<option value="Ampleacion Brecha Existente">Ampleacion Brecha Existente</option>';
+            ZONA_DE_PR_options_str  += '<option value="Banco de tiro (Cerca de WTG 45)">Banco de tiro (Cerca de WTG 45)</option>';
+            ZONA_DE_PR_options_str  += '<option value="Banco de tiro (Línea Colectora 3 - Torre 23)">Banco de tiro (Línea Colectora 3 - Torre 23)</option>';
+            ZONA_DE_PR_options_str  += '<option value="Banco de tiro - Zona 5">Banco de tiro - Zona 5</option>';
+            ZONA_DE_PR_options_str  += '<option value="Banco de tiro provisional">Banco de tiro provisional</option>';
+            ZONA_DE_PR_options_str  += '<option value="Brechas L.E.E">Brechas L.E.E</option>';
+            ZONA_DE_PR_options_str  += '<option value="Camp site">Camp site</option>';
+            ZONA_DE_PR_options_str  += '<option value="Cimentacion OYM">Cimentacion OYM</option>';
+            ZONA_DE_PR_options_str  += '<option value="Concretera">Concretera</option>';
+            ZONA_DE_PR_options_str  += '<option value="Derecho de Via LEE">Derecho de Via LEE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Derecho de Via SARE">Derecho de Via SARE</option>';
+            ZONA_DE_PR_options_str  += '<option value="LT 230 Torre 88">LT 230 Torre 88</option>';
+            ZONA_DE_PR_options_str  += '<option value="LTE 2 Torre 2">LTE 2 Torre 2</option>';
+            ZONA_DE_PR_options_str  += '<option value="Linea Colectora 3 Torre 07">Linea Colectora 3 Torre 07</option>';
+            ZONA_DE_PR_options_str  += '<option value="Linea Colectora 3 Torre 11">Linea Colectora 3 Torre 11</option>';
+            ZONA_DE_PR_options_str  += '<option value="Linea Colectora 3 Torre 23">Linea Colectora 3 Torre 23</option>';
+            ZONA_DE_PR_options_str  += '<option value="Linea Colectora 3 Torre 28">Linea Colectora 3 Torre 28</option>';
+            ZONA_DE_PR_options_str  += '<option value="Linea Colectora 3 Torre 29">Linea Colectora 3 Torre 29</option>';
+            ZONA_DE_PR_options_str  += '<option value="Linea colectora 2 Torre 55-58-59-60-61-62-63">Linea colectora 2 Torre 55-58-59-60-61-62-63</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 1 - Torre 76">Línea Colectora 1 - Torre 76</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 1 - Torre 85">Línea Colectora 1 - Torre 85</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 2 - Torre 14">Línea Colectora 2 - Torre 14</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 2 - Torre 16">Línea Colectora 2 - Torre 16</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 2 - Torre 17">Línea Colectora 2 - Torre 17</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 2 - Torre 5">Línea Colectora 2 - Torre 5</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 3 - Torre 41">Línea Colectora 3 - Torre 41</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 3 - Torre 45">Línea Colectora 3 - Torre 45</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 4 - Torre 12">Línea Colectora 4 - Torre 12</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 4 - Torre 13">Línea Colectora 4 - Torre 13</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 4 - Torre 4">Línea Colectora 4 - Torre 4</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea Colectora 4 - Torre 5">Línea Colectora 4 - Torre 5</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea colectora 1 Torre 01">Línea colectora 1 Torre 01</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea colectora 1 Torre 28">Línea colectora 1 Torre 28</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea colectora 1 Torre 33">Línea colectora 1 Torre 33</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea colectora 1 Torre 37">Línea colectora 1 Torre 37</option>';
+            ZONA_DE_PR_options_str  += '<option value="Línea colectora 1 Torre 38">Línea colectora 1 Torre 38</option>';
+            ZONA_DE_PR_options_str  += '<option value="ODT WTG 01">ODT WTG 01</option>';
+            ZONA_DE_PR_options_str  += '<option value="Obra Drenaje">Obra Drenaje</option>';
+            ZONA_DE_PR_options_str  += '<option value="OyM">OyM</option>';
+            ZONA_DE_PR_options_str  += '<option value="Parcela de reubicación ETJ 1">Parcela de reubicación ETJ 1</option>';
+            ZONA_DE_PR_options_str  += '<option value="Parcela de reubicación ETJ 2">Parcela de reubicación ETJ 2</option>';
+            ZONA_DE_PR_options_str  += '<option value="Parcela de reubicación ETJ 3">Parcela de reubicación ETJ 3</option>';
+            ZONA_DE_PR_options_str  += '<option value="Parcela de reubicación ETJ 4">Parcela de reubicación ETJ 4</option>';
+            ZONA_DE_PR_options_str  += '<option value="Plataforma VESTAS">Plataforma VESTAS</option>';
+            ZONA_DE_PR_options_str  += '<option value="Poligono Afectaciones">Poligono Afectaciones</option>';
+            ZONA_DE_PR_options_str  += '<option value="Polígono de Reforestación">Polígono de Reforestación</option>';
+            ZONA_DE_PR_options_str  += '<option value="Polígono de Rescate y Reubicación de Flora Silvestre ETJ 1">Polígono de Rescate y Reubicación de Flora Silvestre ETJ 1</option>';
+            ZONA_DE_PR_options_str  += '<option value="Polígono de Rescate y Reubicación de Flora Silvestre ETJ 2">Polígono de Rescate y Reubicación de Flora Silvestre ETJ 2</option>';
+            ZONA_DE_PR_options_str  += '<option value="Polígono de obras de conservación">Polígono de obras de conservación</option>';
+            ZONA_DE_PR_options_str  += '<option value="RMT-WTG27-01">RMT-WTG27-01</option>';
+            ZONA_DE_PR_options_str  += '<option value="RMT-WTG62-01">RMT-WTG62-01</option>';
+            ZONA_DE_PR_options_str  += '<option value="Subestacion Electrica">Subestacion Electrica</option>';
+            ZONA_DE_PR_options_str  += '<option value="Subestación Eléctrica">Subestación Eléctrica</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 22 LTE">Torre 22 LTE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 39 LTE">Torre 39 LTE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 40 LTE">Torre 40 LTE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 41 LTE">Torre 41 LTE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 76, 77, 78, 79 LTE">Torre 76, 77, 78, 79 LTE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 82">Torre 82</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre 92 LTE">Torre 92 LTE</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre LEE-34">Torre LEE-34</option>';
+            ZONA_DE_PR_options_str  += '<option value="Torre LEE-42">Torre LEE-42</option>';
+            ZONA_DE_PR_options_str  += '<option value="Tronco conico 61-70">Tronco conico 61-70</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 01">WTG 01</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 02">WTG 02</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 03">WTG 03</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 04">WTG 04</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 05">WTG 05</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 06">WTG 06</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 07">WTG 07</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 12">WTG 12</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 13">WTG 13</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 16">WTG 16</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 17">WTG 17</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 24">WTG 24</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 27">WTG 27</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 28">WTG 28</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 29">WTG 29</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 30">WTG 30</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 33">WTG 33</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 34-35-37-38">WTG 34-35-37-38</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 35">WTG 35</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 38">WTG 38</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 39">WTG 39</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 40">WTG 40</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 42">WTG 42</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 45 - Banco de tiro">WTG 45 - Banco de tiro</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 46">WTG 46</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 46 (Vial)">WTG 46 (Vial)</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 47">WTG 47</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 56">WTG 56</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 57">WTG 57</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 58">WTG 58</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG 62">WTG 62</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG-01">WTG-01</option>';
+            ZONA_DE_PR_options_str  += '<option value="WTG-27">WTG-27</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona 1-Vial Principal-Conformación de viales">Zona 1-Vial Principal-Conformación de viales</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona Aerogenerador">Zona Aerogenerador</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona II-Obra de drenaje">Zona II-Obra de drenaje</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona III Concretera">Zona III Concretera</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona IV-WTG 27">Zona IV-WTG 27</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona V-Vial Principal-LTE Torre 48">Zona V-Vial Principal-LTE Torre 48</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona V-WTG 28">Zona V-WTG 28</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona V-WTG 32">Zona V-WTG 32</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona V-WTG 36">Zona V-WTG 36</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI Banco de tiro provisional">Zona VI Banco de tiro provisional</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI WTG 01">Zona VI WTG 01</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI WTG 02-Banco de Tiro Provisional">Zona VI WTG 02-Banco de Tiro Provisional</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI WTG 58- Zona de viales">Zona VI WTG 58- Zona de viales</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI- WTG 02">Zona VI- WTG 02</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI-WTG 03">Zona VI-WTG 03</option>';
+            ZONA_DE_PR_options_str  += '<option value="Zona VI-WTG 05">Zona VI-WTG 05</option>';
+            ZONA_DE_PR_options_str  += '<option value="Área de resguardo de Flora">Área de resguardo de Flora</option>';
+            sel_ZONA_DE_PR.innerHTML = ZONA_DE_PR_options_str;
+            div_ZONA_DE_PR.appendChild(sel_ZONA_DE_PR);
+            var lab_ZONA_DE_PR = document.createElement('div');
+            lab_ZONA_DE_PR.innerHTML = 'ZONA_DE_PR';
+            lab_ZONA_DE_PR.className = 'filterlabel';
+            div_ZONA_DE_PR.appendChild(lab_ZONA_DE_PR);
+            var reset_ZONA_DE_PR = document.createElement('div');
+            reset_ZONA_DE_PR.innerHTML = 'clear filter';
+            reset_ZONA_DE_PR.className = 'filterlabel';
+            reset_ZONA_DE_PR.onclick = function() {
+                var options = document.getElementById("sel_ZONA_DE_PR").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_ZONA_DE_PR.appendChild(reset_ZONA_DE_PR);
+        </script>
+    </body>
+</html>
