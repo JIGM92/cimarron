@@ -457,7 +457,7 @@
         document.getElementById("all").appendChild(col1);
         document.getElementById("all").appendChild(col2);
         col1.appendChild(mapDiv)
-        var Filters = {"IMPACTO_PO": "str","ZONA_DE_PR": "str","FECHA": "str","FACTOR_AMB": "str","CONTRATA": "str","PROGRAMA": "str"};
+        var Filters = {"IMPACTO_PO": "str","ZONA_DE_PR": "str","PROGRAMA": "str","CONTRATA": "str","FECHA": "str","FACTOR_AMB": "str"};
         function filterFunc() {
           map.eachLayer(function(lyr){
           if ("options" in lyr && "dataVar" in lyr["options"]){
@@ -741,6 +741,87 @@
             div_ZONA_DE_PR.appendChild(reset_ZONA_DE_PR);
             document.getElementById("menu").appendChild(
                 document.createElement("div"));
+            var div_PROGRAMA = document.createElement('div');
+            div_PROGRAMA.id = "div_PROGRAMA";
+            div_PROGRAMA.className= "filterselect";
+            document.getElementById("menu").appendChild(div_PROGRAMA);
+            sel_PROGRAMA = document.createElement('select');
+            sel_PROGRAMA.multiple = true;
+            sel_PROGRAMA.size = 9;
+            sel_PROGRAMA.id = "sel_PROGRAMA";
+            var PROGRAMA_options_str = "<option value='' unselected></option>";
+            sel_PROGRAMA.onchange = function(){filterFunc()};
+            PROGRAMA_options_str  += '<option value="NULL">NULL</option>';
+            PROGRAMA_options_str  += '<option value="ETJ">ETJ</option>';
+            PROGRAMA_options_str  += '<option value="Plan de protección y manejo para las corrientes intermitentes">Plan de protección y manejo para las corrientes intermitentes</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Conservación y Restauración de Suelos">Programa de Conservación y Restauración de Suelos</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Manejo Integral de Residuos">Programa de Manejo Integral de Residuos</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Reforestación">Programa de Reforestación</option>';
+            PROGRAMA_options_str  += '<option value="Programa de Rescate y Reubicación de Flora">Programa de Rescate y Reubicación de Flora</option>';
+            PROGRAMA_options_str  += '<option value="Programa de ahuyentamiento, rescate y reubicación de fauna silvestre">Programa de ahuyentamiento, rescate y reubicación de fauna silvestre</option>';
+            PROGRAMA_options_str  += '<option value="Programa de conservación y restauración de suelos">Programa de conservación y restauración de suelos</option>';
+            sel_PROGRAMA.innerHTML = PROGRAMA_options_str;
+            div_PROGRAMA.appendChild(sel_PROGRAMA);
+            var lab_PROGRAMA = document.createElement('div');
+            lab_PROGRAMA.innerHTML = 'PROGRAMA';
+            lab_PROGRAMA.className = 'filterlabel';
+            div_PROGRAMA.appendChild(lab_PROGRAMA);
+            var reset_PROGRAMA = document.createElement('div');
+            reset_PROGRAMA.innerHTML = 'clear filter';
+            reset_PROGRAMA.className = 'filterlabel';
+            reset_PROGRAMA.onclick = function() {
+                var options = document.getElementById("sel_PROGRAMA").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_PROGRAMA.appendChild(reset_PROGRAMA);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
+            var div_CONTRATA = document.createElement('div');
+            div_CONTRATA.id = "div_CONTRATA";
+            div_CONTRATA.className= "filterselect";
+            document.getElementById("menu").appendChild(div_CONTRATA);
+            sel_CONTRATA = document.createElement('select');
+            sel_CONTRATA.multiple = true;
+            sel_CONTRATA.size = 10;
+            sel_CONTRATA.id = "sel_CONTRATA";
+            var CONTRATA_options_str = "<option value='' unselected></option>";
+            sel_CONTRATA.onchange = function(){filterFunc()};
+            CONTRATA_options_str  += '<option value="CEMEX">CEMEX</option>';
+            CONTRATA_options_str  += '<option value="CEMEX-SAN JUAN-GAMBOA">CEMEX-SAN JUAN-GAMBOA</option>';
+            CONTRATA_options_str  += '<option value="CONZA">CONZA</option>';
+            CONTRATA_options_str  += '<option value="ELECNOR">ELECNOR</option>';
+            CONTRATA_options_str  += '<option value="ELECNOR-EL SAUZ">ELECNOR-EL SAUZ</option>';
+            CONTRATA_options_str  += '<option value="ELECNOR-SACH">ELECNOR-SACH</option>';
+            CONTRATA_options_str  += '<option value="GAMBOA">GAMBOA</option>';
+            CONTRATA_options_str  += '<option value="HEAVY WORKS">HEAVY WORKS</option>';
+            CONTRATA_options_str  += '<option value="SACH">SACH</option>';
+            CONTRATA_options_str  += '<option value="SAN JUAN">SAN JUAN</option>';
+            CONTRATA_options_str  += '<option value="SINDICATO">SINDICATO</option>';
+            CONTRATA_options_str  += '<option value="TORAL">TORAL</option>';
+            CONTRATA_options_str  += '<option value="TRANSBIAGA">TRANSBIAGA</option>';
+            CONTRATA_options_str  += '<option value="VESTAS">VESTAS</option>';
+            sel_CONTRATA.innerHTML = CONTRATA_options_str;
+            div_CONTRATA.appendChild(sel_CONTRATA);
+            var lab_CONTRATA = document.createElement('div');
+            lab_CONTRATA.innerHTML = 'CONTRATA';
+            lab_CONTRATA.className = 'filterlabel';
+            div_CONTRATA.appendChild(lab_CONTRATA);
+            var reset_CONTRATA = document.createElement('div');
+            reset_CONTRATA.innerHTML = 'clear filter';
+            reset_CONTRATA.className = 'filterlabel';
+            reset_CONTRATA.onclick = function() {
+                var options = document.getElementById("sel_CONTRATA").options;
+                for (var i=0; i < options.length; i++) {
+                    options[i].selected = false;
+                }
+                filterFunc();
+            };
+            div_CONTRATA.appendChild(reset_CONTRATA);
+            document.getElementById("menu").appendChild(
+                document.createElement("div"));
             var div_FECHA = document.createElement('div');
             div_FECHA.id = "div_FECHA";
             div_FECHA.className= "filterselect";
@@ -826,87 +907,6 @@
                 filterFunc();
             };
             div_FACTOR_AMB.appendChild(reset_FACTOR_AMB);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_CONTRATA = document.createElement('div');
-            div_CONTRATA.id = "div_CONTRATA";
-            div_CONTRATA.className= "filterselect";
-            document.getElementById("menu").appendChild(div_CONTRATA);
-            sel_CONTRATA = document.createElement('select');
-            sel_CONTRATA.multiple = true;
-            sel_CONTRATA.size = 10;
-            sel_CONTRATA.id = "sel_CONTRATA";
-            var CONTRATA_options_str = "<option value='' unselected></option>";
-            sel_CONTRATA.onchange = function(){filterFunc()};
-            CONTRATA_options_str  += '<option value="CEMEX">CEMEX</option>';
-            CONTRATA_options_str  += '<option value="CEMEX-SAN JUAN-GAMBOA">CEMEX-SAN JUAN-GAMBOA</option>';
-            CONTRATA_options_str  += '<option value="CONZA">CONZA</option>';
-            CONTRATA_options_str  += '<option value="ELECNOR">ELECNOR</option>';
-            CONTRATA_options_str  += '<option value="ELECNOR-EL SAUZ">ELECNOR-EL SAUZ</option>';
-            CONTRATA_options_str  += '<option value="ELECNOR-SACH">ELECNOR-SACH</option>';
-            CONTRATA_options_str  += '<option value="GAMBOA">GAMBOA</option>';
-            CONTRATA_options_str  += '<option value="HEAVY WORKS">HEAVY WORKS</option>';
-            CONTRATA_options_str  += '<option value="SACH">SACH</option>';
-            CONTRATA_options_str  += '<option value="SAN JUAN">SAN JUAN</option>';
-            CONTRATA_options_str  += '<option value="SINDICATO">SINDICATO</option>';
-            CONTRATA_options_str  += '<option value="TORAL">TORAL</option>';
-            CONTRATA_options_str  += '<option value="TRANSBIAGA">TRANSBIAGA</option>';
-            CONTRATA_options_str  += '<option value="VESTAS">VESTAS</option>';
-            sel_CONTRATA.innerHTML = CONTRATA_options_str;
-            div_CONTRATA.appendChild(sel_CONTRATA);
-            var lab_CONTRATA = document.createElement('div');
-            lab_CONTRATA.innerHTML = 'CONTRATA';
-            lab_CONTRATA.className = 'filterlabel';
-            div_CONTRATA.appendChild(lab_CONTRATA);
-            var reset_CONTRATA = document.createElement('div');
-            reset_CONTRATA.innerHTML = 'clear filter';
-            reset_CONTRATA.className = 'filterlabel';
-            reset_CONTRATA.onclick = function() {
-                var options = document.getElementById("sel_CONTRATA").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_CONTRATA.appendChild(reset_CONTRATA);
-            document.getElementById("menu").appendChild(
-                document.createElement("div"));
-            var div_PROGRAMA = document.createElement('div');
-            div_PROGRAMA.id = "div_PROGRAMA";
-            div_PROGRAMA.className= "filterselect";
-            document.getElementById("menu").appendChild(div_PROGRAMA);
-            sel_PROGRAMA = document.createElement('select');
-            sel_PROGRAMA.multiple = true;
-            sel_PROGRAMA.size = 9;
-            sel_PROGRAMA.id = "sel_PROGRAMA";
-            var PROGRAMA_options_str = "<option value='' unselected></option>";
-            sel_PROGRAMA.onchange = function(){filterFunc()};
-            PROGRAMA_options_str  += '<option value="NULL">NULL</option>';
-            PROGRAMA_options_str  += '<option value="ETJ">ETJ</option>';
-            PROGRAMA_options_str  += '<option value="Plan de protección y manejo para las corrientes intermitentes">Plan de protección y manejo para las corrientes intermitentes</option>';
-            PROGRAMA_options_str  += '<option value="Programa de Conservación y Restauración de Suelos">Programa de Conservación y Restauración de Suelos</option>';
-            PROGRAMA_options_str  += '<option value="Programa de Manejo Integral de Residuos">Programa de Manejo Integral de Residuos</option>';
-            PROGRAMA_options_str  += '<option value="Programa de Reforestación">Programa de Reforestación</option>';
-            PROGRAMA_options_str  += '<option value="Programa de Rescate y Reubicación de Flora">Programa de Rescate y Reubicación de Flora</option>';
-            PROGRAMA_options_str  += '<option value="Programa de ahuyentamiento, rescate y reubicación de fauna silvestre">Programa de ahuyentamiento, rescate y reubicación de fauna silvestre</option>';
-            PROGRAMA_options_str  += '<option value="Programa de conservación y restauración de suelos">Programa de conservación y restauración de suelos</option>';
-            sel_PROGRAMA.innerHTML = PROGRAMA_options_str;
-            div_PROGRAMA.appendChild(sel_PROGRAMA);
-            var lab_PROGRAMA = document.createElement('div');
-            lab_PROGRAMA.innerHTML = 'PROGRAMA';
-            lab_PROGRAMA.className = 'filterlabel';
-            div_PROGRAMA.appendChild(lab_PROGRAMA);
-            var reset_PROGRAMA = document.createElement('div');
-            reset_PROGRAMA.innerHTML = 'clear filter';
-            reset_PROGRAMA.className = 'filterlabel';
-            reset_PROGRAMA.onclick = function() {
-                var options = document.getElementById("sel_PROGRAMA").options;
-                for (var i=0; i < options.length; i++) {
-                    options[i].selected = false;
-                }
-                filterFunc();
-            };
-            div_PROGRAMA.appendChild(reset_PROGRAMA);
         </script>
     </body>
 </html>
